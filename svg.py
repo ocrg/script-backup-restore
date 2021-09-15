@@ -17,7 +17,6 @@ def svg():
 		os.mkdir('/home/rick/Backup_P6')
 	else:
 		print("Le dossier 'Backup_P6' existe déjà.")
-	#############	OK	################
 
 	# On met tous les fichiers dans le tableau et on fait de sa première entrée une variable.
 	files_to_save = ['/home/rick/Bureau/ocr.tp', '/home/rick/Bureau/OCR', '/home/rick/Bureau/Chill.xspf', '/home/rick/Bureau/Améliorer Gnome sur Debian', '/home/rick/Bureau/Pognon.ods', '/home/rick/Bureau/Linux.odt']
@@ -41,13 +40,13 @@ def svg():
 
 	print("C\'est terminé !")
 
+	#############	OK	################
 
 # mysqldump à faire
 
 # en argument le dossier Backup_P6 qui serai utilisé pour tarfile
 
 ########### Compression, c'est clé en main, à adapter.
-#import os.path
 
 #def make_tarfile(output_filename, source_dir):
 #    with tarfile.open(output_filename, "w:gz") as tar:
