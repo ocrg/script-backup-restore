@@ -53,5 +53,6 @@ def svg():
 #        tar.add(source_dir, arcname=os.path.basename(source_dir))
 
 
+
 # Appel de la fonction.
 svg()
