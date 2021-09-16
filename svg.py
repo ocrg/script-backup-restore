@@ -42,7 +42,8 @@ def svg():
 
 	#############	OK	################
 
-# mysqldump à faire
+# mysqldump à mettre en python
+mysqldump -u root -p wordpress --databases wordpress > /home/debian/svg.sql
 
 # en argument le dossier Backup_P6 qui serai utilisé pour tarfile
 
