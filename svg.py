@@ -38,12 +38,12 @@ def svg():
 		else:
 			print("Il y a eu un problème avec", file_or_dir)
 
-	print("C\'est terminé !")
+	print("Dossier terminé.")
 
 	#############	OK	################
 
 # mysqldump à mettre en python
-mysqldump -u root -p wordpress --databases wordpress > /home/debian/svg.sql
+#mysqldump -u root -p wordpress --databases wordpress > /home/debian/svg.sql
 
 # en argument le dossier Backup_P6 qui serai utilisé pour tarfile
 
@@ -52,10 +52,14 @@ mysqldump -u root -p wordpress --databases wordpress > /home/debian/svg.sql
 #    with tarfile.open(output_filename, "w:gz") as tar:
 #        tar.add(source_dir, arcname=os.path.basename(source_dir))
 
-	def make_tarfile("Backup_P6.tar.gz", directory_where_save):
-		with tarfile.open("Backup_P6.tar.gz", "w:gz") as tar:
-        		tar.add(directory_where_save, arcname = os.path.basename(directory_where_save))
+	output_filename = 'Backup_P6.tar.gz'
+	if os.path.isfile('/home/rick/' + output_filename) == True:
+		print("Le fichier existe déjà.")
+	else:
+		with tarfile.open('/home/rick/' + output_filename, "w:gz") as tar:
+			tar.add(directory_where_save, arcname = os.path.basename(directory_where_save))
 
+	print("Archive terminée.")
 
 # Appel de la fonction.
 svg()
