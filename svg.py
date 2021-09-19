@@ -4,6 +4,7 @@
 import os
 import shutil
 import tarfile
+import pipes
 
 # On fait une fonction.
 def svg():
@@ -17,8 +18,21 @@ def svg():
 	# Variable du dossier.
 	directory_where_save = '/home/debian/Backup_P6/'
 
+	DB_HOST = 'localhost' 
+	DB_USER = 'root'
+	DB_USER_PASSWORD = 'debian'
+	DB_NAME = 'wordpress'
+	BACKUP_PATH = '/home/debian/Backup_P6/'
+
+	dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + pipes.quote(BACKUP_PATH) + "/" + DB_NAME + ".sql"
+
+	print(dumpcmd)
+	os.system(dumpcmd)
+
+	print ("La BDD a été sauvegardée ici : " + BACKUP_PATH)
+
 	# On met tous les fichiers à sauvegarder dans un tableau.
-	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess', '/home/debian/Backup_P6/' + DB_NAME + '.sql']
 
 	# On fait le tour du tableau.
 	print("Début de la copie.")
