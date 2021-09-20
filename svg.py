@@ -4,15 +4,18 @@
 import os
 import shutil
 import tarfile
+import subprocess
 
 # Fonction de sauvegarde.
 def save(temp_dir):
 
 	# Création du dossier temporaire pour travailler dedans par simplicité.
-	if os.path.exists('/home/debian/' + temp_dir + '.tar.gz') == False and os.path.exists('/home/debian/' + temp_dir) == False:
+	if os.path.exists('/home/debian/' + temp_dir + '.tar.gz') == True:
+		exit("L'archive " + temp_dir + ".tar.gz existe déjà ! Fin du script, aucune sauvegarde effectuée.")
+	elif os.path.exists('/home/debian/' + temp_dir) == False:
 		os.mkdir('/home/debian/' + temp_dir)
 	else:
-		exit("L'archive ou le dossier temporaire existe déjà.")
+		exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
 
 	# Variable du dossier temporaire.
 	directory_where_save = '/home/debian/' + temp_dir + '/'
