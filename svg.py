@@ -28,10 +28,10 @@ def save(temp_dir):
 	DB_NAME = 'wordpress'
 	BACKUP_PATH = '/home/debian/' + temp_dir + '/'
 
-	# La ligne de code.
+	# La ligne de code qui sera exécutée par subprocess.
 	dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
-	os.system(dumpcmd)
-#	subprocess.run(dumpcmd)
+	# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
+	subprocess.run(dumpcmd, shell=True)
 
 	# Un print pour voir ce qui est clairement saisie.
 	print(dumpcmd)
@@ -40,11 +40,11 @@ def save(temp_dir):
 	# On met tous les fichiers à sauvegarder dans un tableau.
 	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
 
-	# On fait le tour du tableau.
+	# On fait le tour du tableau avec la boucle for.
 	print("")
 	print("Début de la copie.")
 	for file_or_dir in files_to_save:
-		# On contrôle si c'est un dossier ou un fichier.
+		# On contrôle si c'est un dossier ou un fichier. Si c'est un dossier on utilise shutil.copytree(src, dst), si c'est un fichier on utilise copyfile(src, dst). En dst, on prend le chemin du dossier temporaire + le nom du dossier ou fichier à copier. On doit donner chemin de destination ainsi qu'un nom d'élément une fois copier, sinon on perd 4 jours sur cette commande !
 		if os.path.isdir(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
 			shutil.copytree(file_or_dir, directory_where_save + os.path.basename(file_or_dir))
 		elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
@@ -60,7 +60,7 @@ def save(temp_dir):
 
 	# La compression.
 	output_filename = temp_dir + '.tar.gz'
-
+	# La condition permet seulement de savoir si le dossier existe déjà. Si oui, on aura un bug !
 	if os.path.isfile('/home/debian/' + output_filename) == True:
 		print("Le fichier existe déjà.")
 	else:
