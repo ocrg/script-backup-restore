@@ -1,27 +1,23 @@
 # Projet 6 et 9, sauvegarde wordpress.
-# En argument le dossier Backup_P6 qui serai utilisé pour tarfile.
 
 # Les imports.
 import os
 import shutil
 import tarfile
-import pipes
 
-# On fait une fonction.
-def svg(temp_dir):
+# Fonction de sauvegarde.
+def save(temp_dir):
 
 	# Création du dossier temporaire pour travailler dedans par simplicité.
-	if os.path.exists('/home/debian/' + temp_dir + '.tar.gz') == False:
+	if os.path.exists('/home/debian/' + temp_dir + '.tar.gz') == False and os.path.exists('/home/debian/' + temp_dir) == False:
 		os.mkdir('/home/debian/' + temp_dir)
 	else:
-		print("L'archive " + temp_dir + ".tar.gz" + " existe déjà.")
-		return
+		exit("L'archive ou le dossier temporaire existe déjà.")
 
 	# Variable du dossier temporaire.
 	directory_where_save = '/home/debian/' + temp_dir + '/'
 
 	### MySQLdump, début. ###
-	# La ligne ci-dessous produit le même résultat si on la saisie : mysqldump -u root -p wordpress --databases wordpress > /home/debian/svg.sql
 	# Les constantes
 	DB_HOST = 'localhost' 
 	DB_USER = 'root'
@@ -30,8 +26,10 @@ def svg(temp_dir):
 	BACKUP_PATH = '/home/debian/' + temp_dir + '/'
 
 	# La ligne de code.
-	dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + pipes.quote(BACKUP_PATH) + DB_NAME + ".sql"
+	dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
 	os.system(dumpcmd)
+#	subprocess.run(dumpcmd)
+
 	# Un print pour voir ce qui est clairement saisie.
 	print(dumpcmd)
 	### MySQLdump, fin. ###
@@ -74,5 +72,11 @@ def svg(temp_dir):
 	shutil.rmtree(directory_where_save)
 	print("Backup terminée avec succès !")
 
+# .yaml -> fichier de configuration.
+# tryexcept -> à mettre sur les commandes à tester.
+# python3 svg.py fichier_de_conf
+
 # Appel de la fonction.
-svg('Backup_P9')
+save('Backup_P6')
+
+# restore()
