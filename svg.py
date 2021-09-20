@@ -1,5 +1,9 @@
 # Projet 6 et 9, sauvegarde wordpress.
 
+# .yaml -> fichier de configuration.
+# tryexcept -> à mettre sur les commandes à tester.
+# python3 svg.py fichier_de_conf
+
 # Les imports.
 import os
 import shutil
@@ -7,26 +11,29 @@ import tarfile
 import subprocess
 
 # Fonction de sauvegarde.
-def save(temp_dir):
+def save(temp_dir_save):
+
+	# Chemin debian home.
+	deb = '/home/debian/'
 
 	# Création du dossier temporaire pour travailler dedans par simplicité.
-	if os.path.exists('/home/debian/' + temp_dir + '.tar.gz') == True:
-		exit("L'archive " + temp_dir + ".tar.gz existe déjà ! Fin du script, aucune sauvegarde effectuée.")
-	elif os.path.exists('/home/debian/' + temp_dir) == False:
-		os.mkdir('/home/debian/' + temp_dir)
+	if os.path.exists(deb + temp_dir_save + '.tar.gz') == True:
+		exit("L'archive " + temp_dir_save + ".tar.gz existe déjà ! Fin du script, aucune sauvegarde effectuée.")
+	elif os.path.exists(deb + temp_dir_save) == False:
+		os.mkdir(deb + temp_dir_save)
 	else:
 		exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
 
 	# Variable du dossier temporaire.
-	directory_where_save = '/home/debian/' + temp_dir + '/'
+	directory_where_save = deb + temp_dir_save + '/'
 
-	### MySQLdump, début. ###
+	### ### ### MySQLdump, début. ### ### ###
 	# Les constantes
 	DB_HOST = 'localhost' 
 	DB_USER = 'root'
 	DB_USER_PASSWORD = 'debian'
 	DB_NAME = 'wordpress'
-	BACKUP_PATH = '/home/debian/' + temp_dir + '/'
+	BACKUP_PATH = deb + temp_dir_save + '/'
 
 	# La ligne de code qui sera exécutée par subprocess.
 	dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
@@ -35,7 +42,7 @@ def save(temp_dir):
 
 	# Un print pour voir ce qui est clairement saisie.
 	print(dumpcmd)
-	### MySQLdump, fin. ###
+	### ### ### MySQLdump, fin. ### ### ###
 
 	# On met tous les fichiers à sauvegarder dans un tableau.
 	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
@@ -59,14 +66,14 @@ def save(temp_dir):
 	print("")
 
 	# La compression.
-	output_filename = temp_dir + '.tar.gz'
+	output_filename = temp_dir_save + '.tar.gz'
 	# La condition permet seulement de savoir si le dossier existe déjà. Si oui, on aura un bug !
-	if os.path.isfile('/home/debian/' + output_filename) == True:
+	if os.path.isfile(deb + output_filename) == True:
 		print("Le fichier existe déjà.")
 	else:
 		# Instruction pour le tar.gz.
 		print("Début de la compression.")
-		with tarfile.open('/home/debian/' + output_filename, "w:gz") as tar:
+		with tarfile.open(deb + output_filename, "w:gz") as tar:
 			tar.add(directory_where_save, os.path.basename(directory_where_save))
 		print("Compression terminée.")
 		print("")
@@ -75,11 +82,32 @@ def save(temp_dir):
 	shutil.rmtree(directory_where_save)
 	print("Backup terminée avec succès !")
 
-# .yaml -> fichier de configuration.
-# tryexcept -> à mettre sur les commandes à tester.
-# python3 svg.py fichier_de_conf
+
+
+
+
+def restore(temp_dir_restore):
+
+	# Chemin debian home.
+	deb = '/home/debian/'
+
+	# Création du dossier temporaire pour travailler dedans par simplicité.
+	if os.path.exists(deb + temp_dir_restore) == False:
+		os.mkdir(deb + temp_dir_restore)
+	else:
+		exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
+
+	
+
+
+	# Suppression du dossier temporaire.
+	shutil.rmtree(directory_where_save)
+	print("Backup terminée avec succès !")
+
+
+
+
 
 # Appel de la fonction.
 save('Backup_P6')
-
-# restore()
+#restore('Backup_P6')
