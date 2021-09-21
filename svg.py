@@ -1,3 +1,6 @@
+#!/usr/bin/python3.9
+# -*-coding:utf-8 -*
+
 # Projet 6 et 9, sauvegarde wordpress.
 
 # .yaml -> fichier de configuration.
@@ -9,6 +12,8 @@ import os
 import shutil
 import tarfile
 import subprocess
+
+
 
 # Fonction de sauvegarde.
 def save(temp_dir_save):
@@ -65,18 +70,12 @@ def save(temp_dir_save):
 	print("Fin de la copie.")
 	print("")
 
-	# La compression.
-	output_filename = temp_dir_save + '.tar.gz'
-	# La condition permet seulement de savoir si le dossier existe déjà. Si oui, on aura un bug !
-	if os.path.isfile(deb + output_filename) == True:
-		print("Le fichier existe déjà.")
-	else:
-		# Instruction pour le tar.gz.
-		print("Début de la compression.")
-		with tarfile.open(deb + output_filename, "w:gz") as tar:
-			tar.add(directory_where_save, os.path.basename(directory_where_save))
-		print("Compression terminée.")
-		print("")
+	# Compression. Instruction pour le tar.gz.
+	print("Début de la compression.")
+	with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
+		tar.add(directory_where_save, os.path.basename(directory_where_save))
+	print("Compression terminée.")
+	print("")
 
 	# Suppression du dossier temporaire.
 	shutil.rmtree(directory_where_save)
@@ -106,8 +105,10 @@ def restore(temp_dir_restore):
 
 
 
-
-
 # Appel de la fonction.
-save('Backup_P6')
+if __name__ == "__main__":
+	save('Backup_P9')
+else:
+	exit("Erreur lors de l'éxecution de la condition __name__ == __main__")
+
 #restore('Backup_P6')
