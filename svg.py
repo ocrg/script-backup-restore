@@ -4,8 +4,9 @@
 # Projet 6 et 9, sauvegarde wordpress.
 
 # .yaml -> fichier de configuration.
-# try: except: -> à mettre sur les commandes à tester.
 # python3 svg.py fichier_de_conf
+
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Les imports.
 import os
@@ -13,7 +14,7 @@ import shutil
 import tarfile
 import subprocess
 
-
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Fonction de sauvegarde.
 def save(temp_dir_save):
@@ -26,7 +27,7 @@ def save(temp_dir_save):
 		# Variable du dossier temporaire.
 		directory_where_save = deb + temp_dir_save + '/'
 	except:
-		exit("Problème : création des constantes des chemins.")
+		exit("Problème avec la création des constantes des chemins.")
 
 
 	try:
@@ -40,7 +41,7 @@ def save(temp_dir_save):
 			exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
 	except:
 		shutil.rmtree(directory_where_save)
-		exit("Problème : création du dossier temporaire.")
+		exit("Problème avec la création du dossier temporaire.")
 
 
 	try:
@@ -65,7 +66,8 @@ def save(temp_dir_save):
 		# Un print pour voir ce qui est clairement saisie.
 		print(dumpcmd)
 	except:
-		print("Problème avec le bloque MySQLdump.")
+		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
+		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 		### ### ### MySQLdump, fin. ### ### ###
 
 
@@ -111,58 +113,60 @@ def save(temp_dir_save):
 		exit("Problème avec le bloque tarfile.")
 
 
-
 	try:
 		#	SUPPRESSION DOSSIER TEMPORAIRE
 		# Suppression du dossier temporaire.
 		shutil.rmtree(directory_where_save)
 		print("Backup terminée avec succès !")
 	except:
-		shutil.rmtree(directory_where_save)
 		exit("Problème avec le bloque de suppression du dossier temporaire.")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 def restore(temp_dir_restore):
 
-	# Chemin debian home.
-	deb = '/home/debian/'
 
-	# Création du dossier temporaire pour travailler dedans par simplicité.
-	if os.path.exists(deb + temp_dir_restore) == False:
-		os.mkdir(deb + temp_dir_restore)
-	else:
-		exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
-
-	
+	try:
+		#	CONSTANTES DES CHEMINS
+		# Chemin debian home.
+		deb = '/home/debian/'
+	except:
+		exit("Problème avec la création des constantes.")
 
 
-	# Suppression du dossier temporaire.
-	shutil.rmtree(directory_where_save)
-	print("Backup terminée avec succès !")
+	try:
+		#	CRÉATION DU DOSSIER TEMPORAIRE
+		# Création du dossier temporaire pour travailler dedans par simplicité.
+		if os.path.exists(deb + temp_dir_restore) == False:
+			os.mkdir(deb + temp_dir_restore)
+		else:
+			exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
+	except:
+		exit("Problème avec la création du dossier.")
 
 
+	try:
+		#	DÉCOMPRESSION
+		# Compression. Instruction pour le tar.gz.
+		print("Début de la compression.")
+		with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
+			tar.add(directory_where_save, os.path.basename(directory_where_save))
+		print("Compression terminée.")
+		print("")
+	except:
+		shutil.rmtree(directory_where_save)
+		exit("Problème avec le bloque tarfile.")
+
+
+#	try:
+#		# SUPPRESSION DOSSIER TEMPORAIRE
+#		# Suppression du dossier temporaire.
+#		shutil.rmtree(directory_where_save)
+#		print("Backup terminée avec succès !")
+#	except:
+#		print("Problème avec la suppression du dossier temporaire.")
+
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Appel de la fonction.
 save('Backup_P9')
