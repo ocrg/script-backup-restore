@@ -6,7 +6,7 @@
 # .yaml -> fichier de configuration.
 # python3 svg.py fichier_de_conf
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Les imports.
 import os
@@ -14,7 +14,7 @@ import shutil
 import tarfile
 import subprocess
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Fonction de sauvegarde.
 def save(temp_dir_save):
@@ -83,14 +83,20 @@ def save(temp_dir_save):
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.copytree(src, dst), un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination (logique) + le nom du dossier ou fichier à copier (logique mais moins évident). D'où l'utilisation d'os.path.basename !
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple. Pratique !
+
+			# Si c'est un dossier et qu'il n'existe pas dans le dossier temporaire :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
 				shutil.copytree(file_or_dir, directory_where_save + os.path.basename(file_or_dir))
+			# Si c'est un fichier et qu'il n'existe pas dans le dossier temporaire :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
 				shutil.copyfile(file_or_dir, directory_where_save + os.path.basename(file_or_dir))
+			# Si c'est un dossier et qu'il existe déjà dans le dossier temporaire :
 			elif os.path.isdir(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == True:
 				print("Ce dossier existe déjà dans le dossier temporaire : " + file_or_dir)
+			# Si c'est un fichier et qu'il existe déjà dans le dossier temporaire :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == True:
 				print("Ce fichier existe déjà dans le dossier temporaire : " + file_or_dir)			
+			# Si anomalie :
 			else:
 				print("Il y a eu un problème avec" + file_or_dir)
 		print("Fin de la copie.")
@@ -121,7 +127,7 @@ def save(temp_dir_save):
 	except:
 		exit("Problème avec le bloque de suppression du dossier temporaire.")
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 def restore(temp_dir_restore):
 
@@ -141,35 +147,65 @@ def restore(temp_dir_restore):
 		if os.path.exists(directory_where_restore) == False:
 			os.mkdir(directory_where_restore)
 		else:
-			exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
+			exit("Le dossier temporaire existe déjà ! Fin du script.")
 	except:
 		exit("Problème avec la création du dossier.")
 
 
 	try:
 		#	DÉCOMPRESSION
-		# Compression. Instruction pour le tar.gz.
-		print("Début de la compression.")
+		# Décompression. Instruction pour le tar.gz.
+		print("Début de la décompression.")
 		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
 			tar.extractall(directory_where_restore)
-		print("Compression terminée.")
+		print("Décompression terminée.")
 		print("")
 	except:
-#		shutil.rmtree(directory_where_restore)
-		print("Problème avec le bloque tarfile.")
+		shutil.rmtree(directory_where_restore)
+		exit("Problème lors de la décompression. Fin du script.")
+
+
+	try:
+		#	SUPPRESSION
+		# On vérifie si les fichiers à remplacer existe déjà. Si oui, on les supprime.
+		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+
+		# On fait le tour du tableau avec la boucle for.
+		print("")
+		print("Début de la suppression des fichiers existants.")
+		for file_or_dir in files_to_delete:
+			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple. Pratique !
+
+			# Si c'est un dossier :
+			if os.path.isdir(file_or_dir) == True:
+				shutil.rmtree(file_or_dir)
+			# Si c'est un fichier :
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
+				os.remove(file_or_dir)
+			# Si c'est un dossier et qu'il n'existe pas :
+			elif os.path.exists(file_or_dir) == False:
+				print("Ce dossier a déjà été supprimé : " + file_or_dir)
+			# Si c'est un fichier et qu'il existe pas :
+			elif os.path.exists(file_or_dir) == False:
+				print("Ce fichier a déjà été supprimé : " + file_or_dir)			
+			# Si anomalie :
+			else:
+				print("Il y a eu un problème avec" + file_or_dir)
+		print("Fin de la suppression.")
+		print("")
+	except:
+		shutil.rmtree(directory_where_restore)
+		exit("Problème avec le bloque de suppression.")
+
+
+
 
 
 #	try:
-		# open file
-#		file = tarfile.open('gfg.tar.gz')
-  
-		# extracting file
-#		file.extractall('./Destination_FolderName')
-  
-#		file.close()
-#	except:
-#		shutil.rmtree(directory_where_restore)
-
+		#	REMPLACEMENT
+		# On fait un tableau qui contient les fichiers à remettre en place.
+	
 
 #	try:
 #		# SUPPRESSION DOSSIER TEMPORAIRE
@@ -179,9 +215,10 @@ def restore(temp_dir_restore):
 #	except:
 #		print("Problème avec la suppression du dossier temporaire.")
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
-# Appel de la fonction.
+# Appel de la fonction. 
+
 #save('Backup_P9')
 
 restore('Backup_P9')
