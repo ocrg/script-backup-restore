@@ -155,7 +155,7 @@ def restore(temp_dir_restore):
 	try:
 		#	DÉCOMPRESSION
 		# Décompression. Instruction pour le tar.gz.
-		print("Début de la décompression.")
+		print("Début de la décompression...")
 		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
 			tar.extractall(directory_where_restore)
 		print("Décompression terminée.")
@@ -169,27 +169,34 @@ def restore(temp_dir_restore):
 		#	SUPPRESSION
 		# On vérifie si les fichiers à remplacer existe déjà. Si oui, on les supprime.
 		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+		print("Tableau")
 
 		# On fait le tour du tableau avec la boucle for.
-		print("")
 		print("Début de la suppression des fichiers existants.")
 		for file_or_dir in files_to_delete:
+			print("0 " + file_or_dir)
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple. Pratique !
 
-			# Si c'est un dossier :
-			if os.path.isdir(file_or_dir) == True:
+			# Si c'est un dossier qui existe dans /var, on le supprime dans /var :
+			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
+				print("1 " + file_or_dir)
 				shutil.rmtree(file_or_dir)
-			# Si c'est un fichier :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
+				print("2 " + file_or_dir)
+			# Si c'est un fichier qui existe dans /var, on le supprime dans /var :
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == True:
+				print("3 " + file_or_dir)
 				os.remove(file_or_dir)
-			# Si c'est un dossier et qu'il n'existe pas :
-			elif os.path.exists(file_or_dir) == False:
+				print("4 " + file_or_dir)
+			# Si c'est un dossier qui n'existe pas dans /var, on fait un message :
+			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
+				print("5 " + file_or_dir)
 				print("Ce dossier a déjà été supprimé : " + file_or_dir)
-			# Si c'est un fichier et qu'il existe pas :
-			elif os.path.exists(file_or_dir) == False:
+				print("6 " + file_or_dir)
+			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
 				print("Ce fichier a déjà été supprimé : " + file_or_dir)			
-			# Si anomalie :
+			# S'il y a anomalie :
 			else:
 				print("Il y a eu un problème avec" + file_or_dir)
 		print("Fin de la suppression.")
@@ -197,10 +204,6 @@ def restore(temp_dir_restore):
 	except:
 		shutil.rmtree(directory_where_restore)
 		exit("Problème avec le bloque de suppression.")
-
-
-
-
 
 #	try:
 		#	REMPLACEMENT
