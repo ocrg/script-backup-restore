@@ -150,13 +150,13 @@ def restore(temp_dir_restore):
 		#	DÉCOMPRESSION
 		# Compression. Instruction pour le tar.gz.
 		print("Début de la compression.")
-		with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
-			tar.extractall(directory_where_restore, os.path.basename(directory_where_restore))
+		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
+			tar.extractall(directory_where_restore)
 		print("Compression terminée.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_restore)
-		exit("Problème avec le bloque tarfile.")
+#		shutil.rmtree(directory_where_restore)
+		print("Problème avec le bloque tarfile.")
 
 
 #	try:
@@ -182,6 +182,6 @@ def restore(temp_dir_restore):
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Appel de la fonction.
-save('Backup_P9')
+#save('Backup_P9')
 
-#restore('Backup_P9')
+restore('Backup_P9')
