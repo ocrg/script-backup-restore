@@ -130,6 +130,7 @@ def restore(temp_dir_restore):
 		#	CONSTANTES DES CHEMINS
 		# Chemin debian home.
 		deb = '/home/debian/'
+		directory_where_restore = deb + temp_dir_restore + '/'
 	except:
 		exit("Problème avec la création des constantes.")
 
@@ -137,8 +138,8 @@ def restore(temp_dir_restore):
 	try:
 		#	CRÉATION DU DOSSIER TEMPORAIRE
 		# Création du dossier temporaire pour travailler dedans par simplicité.
-		if os.path.exists(deb + temp_dir_restore) == False:
-			os.mkdir(deb + temp_dir_restore)
+		if os.path.exists(directory_where_restore) == False:
+			os.mkdir(directory_where_restore)
 		else:
 			exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
 	except:
@@ -150,18 +151,30 @@ def restore(temp_dir_restore):
 		# Compression. Instruction pour le tar.gz.
 		print("Début de la compression.")
 		with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
-			tar.add(directory_where_save, os.path.basename(directory_where_save))
+			tar.extractall(directory_where_restore, os.path.basename(directory_where_restore))
 		print("Compression terminée.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_save)
+		shutil.rmtree(directory_where_restore)
 		exit("Problème avec le bloque tarfile.")
+
+
+#	try:
+		# open file
+#		file = tarfile.open('gfg.tar.gz')
+  
+		# extracting file
+#		file.extractall('./Destination_FolderName')
+  
+#		file.close()
+#	except:
+#		shutil.rmtree(directory_where_restore)
 
 
 #	try:
 #		# SUPPRESSION DOSSIER TEMPORAIRE
 #		# Suppression du dossier temporaire.
-#		shutil.rmtree(directory_where_save)
+#		shutil.rmtree(directory_where_restore)
 #		print("Backup terminée avec succès !")
 #	except:
 #		print("Problème avec la suppression du dossier temporaire.")
@@ -171,4 +184,4 @@ def restore(temp_dir_restore):
 # Appel de la fonction.
 save('Backup_P9')
 
-#restore('Backup_P6')
+#restore('Backup_P9')
