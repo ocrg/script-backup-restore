@@ -68,7 +68,6 @@ def save(temp_dir_save):
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
-		### ### ### MySQLdump, fin. ### ### ###
 
 
 	try:
@@ -149,7 +148,7 @@ def restore(temp_dir_restore):
 		else:
 			exit("Le dossier temporaire existe déjà ! Fin du script.")
 	except:
-		exit("Problème avec la création du dossier.")
+		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
 
 
 	try:
@@ -167,56 +166,95 @@ def restore(temp_dir_restore):
 
 	try:
 		#	SUPPRESSION
-		# On vérifie si les fichiers à remplacer existe déjà. Si oui, on les supprime.
+		# Tableau des fichiers existants sur le serveur et qui seront supprimé.
+		# Ce tableau sera ensuite utilisé pour replacer les fichiers de l'archive à leur place sur le serveur.
 		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
-		print("Tableau")
-
+		
 		# On fait le tour du tableau avec la boucle for.
 		print("Début de la suppression des fichiers existants.")
 		for file_or_dir in files_to_delete:
-			print("0 " + file_or_dir)
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
-			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple. Pratique !
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
 
 			# Si c'est un dossier qui existe dans /var, on le supprime dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
-				print("1 " + file_or_dir)
 				shutil.rmtree(file_or_dir)
-				print("2 " + file_or_dir)
+				print("Fichier supprimé : " + file_or_dir)
 			# Si c'est un fichier qui existe dans /var, on le supprime dans /var :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == True:
-				print("3 " + file_or_dir)
 				os.remove(file_or_dir)
-				print("4 " + file_or_dir)
+				print("Fichier supprimé : " + file_or_dir)
 			# Si c'est un dossier qui n'existe pas dans /var, on fait un message :
-			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				print("5 " + file_or_dir)
-				print("Ce dossier a déjà été supprimé : " + file_or_dir)
-				print("6 " + file_or_dir)
-			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				print("Ce fichier a déjà été supprimé : " + file_or_dir)			
+#?			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
+#?				print("Ce dossier a déjà été supprimé : " + file_or_dir)
+#?			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
+#?			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
+#?				print("Ce fichier a déjà été supprimé : " + file_or_dir)
 			# S'il y a anomalie :
 			else:
-				print("Il y a eu un problème avec" + file_or_dir)
+				print("Il y a eu un problème avec " + file_or_dir)
 		print("Fin de la suppression.")
 		print("")
 	except:
 		shutil.rmtree(directory_where_restore)
 		exit("Problème avec le bloque de suppression.")
 
-#	try:
-		#	REMPLACEMENT
+
+
+	try:
+		#	REPLACEMENT
 		# On fait un tableau qui contient les fichiers à remettre en place.
-	
+		for file_or_dir in files_to_delete:
+			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
+
+			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
+			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
+				shutil.copytree(directory_where_save + os.path.basename(file_or_dir), file_or_dir)
+				print("Dossier replacé : " + file_or_dir)
+			# Si c'est un fichier et qu'il n'existe pas dans /var, on le met dans /var :
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
+				shutil.copyfile(directory_where_save + os.path.basename(file_or_dir), file_or_dir)
+				print("Fichier replacé : " + file_or_dir)
+			# Si c'est un dossier qui existe déjà dans /var, on fait un message :
+			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
+				print("Ce dossier existe déjà dans le répertoire de destination : " + file_or_dir)
+			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == True:
+				print("Ce fichier existe déjà dans le répertoire de destination : " + file_or_dir)
+			# S'il y a anomalie :
+			else:
+				print("Il y a eu un problème avec " + file_or_dir)
+		print("Fin des replacements.")
+		print("")
+	except:
+		print("Problème avec le bloque de replacement. Le script passe maintenant à la BDD.")
+
 
 #	try:
-#		# SUPPRESSION DOSSIER TEMPORAIRE
-#		# Suppression du dossier temporaire.
-#		shutil.rmtree(directory_where_restore)
-#		print("Backup terminée avec succès !")
+		#	CONSTANTES MYSQL
+		# Les constantes
+#		DB_HOST = 'localhost'
+#		BACKUP_PATH = deb + temp_dir_save + '/'
+#		DB_USER = 'root'
+#		DB_USER_PASSWORD = 'debian'
+#		DB_NAME = 'wordpress'
 #	except:
-#		print("Problème avec la suppression du dossier temporaire.")
+#		print("Problème dans la création des constantes de MySQLdump.")
+
+
+#	try:
+		#	MYSQLDUMP
+		# La ligne de code qui sera exécutée par subprocess.
+#		dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
+		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
+#		subprocess.run(dumpcmd, shell=True)
+
+		# Un print pour voir ce qui est clairement saisie.
+#		print(dumpcmd)
+#	except:
+		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
+#		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
