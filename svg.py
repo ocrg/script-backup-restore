@@ -22,9 +22,9 @@ def save(temp_dir_save):
 
 	try :
 		#	CONSTANTES DES CHEMINS
-		# Chemin debian home.
+		# Constante du chemin de home.
 		deb = '/home/debian/'
-		# Variable du dossier temporaire.
+		# Constante du chemin du dossier temporaire.
 		directory_where_save = deb + temp_dir_save + '/'
 	except:
 		exit("Problème avec la création des constantes des chemins.")
@@ -169,27 +169,23 @@ def restore(temp_dir_restore):
 		# Tableau des fichiers existants sur le serveur et qui seront supprimé.
 		# Ce tableau sera ensuite utilisé pour replacer les fichiers de l'archive à leur place sur le serveur.
 		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
-		
+
 		# On fait le tour du tableau avec la boucle for.
-		print("Début de la suppression des fichiers existants.")
+		print("Début de la suppression des fichiers existants...")
 		for file_or_dir in files_to_delete:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
-
-			# Si c'est un dossier qui existe dans /var, on le supprime dans /var :
+			# Si c'est un dossier et que ça existe, on le supprime dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
 				shutil.rmtree(file_or_dir)
-				print("Fichier supprimé : " + file_or_dir)
-			# Si c'est un fichier qui existe dans /var, on le supprime dans /var :
+				print("Dossier supprimé : " + os.path.basename(file_or_dir))
+			# Si c'est un fichier et que ça existe, on le supprime dans /var :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == True:
 				os.remove(file_or_dir)
-				print("Fichier supprimé : " + file_or_dir)
-			# Si c'est un dossier qui n'existe pas dans /var, on fait un message :
-#?			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-#?				print("Ce dossier a déjà été supprimé : " + file_or_dir)
-#?			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
-#?			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-#?				print("Ce fichier a déjà été supprimé : " + file_or_dir)
+				print("Fichier supprimé : " + os.path.basename(file_or_dir))
+			# Si c'est un dossier ou un fichier mais qu'il n'existe pas dans /var, on fait un message :
+			elif os.path.exists(file_or_dir) == False:
+				print("Ce fichier ou dossier semble avoir été supprimé : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
 				print("Il y a eu un problème avec " + file_or_dir)
@@ -200,36 +196,44 @@ def restore(temp_dir_restore):
 		exit("Problème avec le bloque de suppression.")
 
 
-
 	try:
 		#	REPLACEMENT
 		# On fait un tableau qui contient les fichiers à remettre en place.
-		for file_or_dir in files_to_delete:
-			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
-			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
+		files_to_copy = [directory_where_restore + 'wp-config.php',directory_where_restore + 'wp-content',directory_where_restore + '.htaccess']
+		# Constante du chemin du dossier du site.
+		site_directory = '/var/www/html/www.ocr.tp/'
 
+		print("Début des replacements...")
+		for file_or_dir in files_to_copy:
+			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
+
+			print("0")
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				shutil.copytree(directory_where_save + os.path.basename(file_or_dir), file_or_dir)
+				print("1")
+				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
 				print("Dossier replacé : " + file_or_dir)
 			# Si c'est un fichier et qu'il n'existe pas dans /var, on le met dans /var :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				shutil.copyfile(directory_where_save + os.path.basename(file_or_dir), file_or_dir)
+				print("2")
+				shutil.copyfile(directory_where_restore + os.path.basename(file_or_dir), site_directory + os.path.basename(file_or_dir))
 				print("Fichier replacé : " + file_or_dir)
 			# Si c'est un dossier qui existe déjà dans /var, on fait un message :
-			elif os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
-				print("Ce dossier existe déjà dans le répertoire de destination : " + file_or_dir)
-			# Si c'est un fichier qui n'existe pas dans /var, on fait un message :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == True:
-				print("Ce fichier existe déjà dans le répertoire de destination : " + file_or_dir)
+			elif os.path.exists(file_or_dir) == False:
+				print("3")
+				print("Ce fichier ou dossier semble avoir été supprimé : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
+				print("4")
 				print("Il y a eu un problème avec " + file_or_dir)
+
 		print("Fin des replacements.")
 		print("")
 	except:
 		print("Problème avec le bloque de replacement. Le script passe maintenant à la BDD.")
 
+	shutil.rmtree(directory_where_restore)
+	os.remove(deb + "svg.py")
 
 #	try:
 		#	CONSTANTES MYSQL
