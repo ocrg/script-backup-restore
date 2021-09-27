@@ -26,6 +26,8 @@ def save(temp_dir_save):
 		deb = '/home/debian/'
 		# Constante du chemin du dossier temporaire.
 		directory_where_save = deb + temp_dir_save + '/'
+		# On met tous les fichiers à sauvegarder dans un tableau.
+		files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
 	except:
 		exit("Problème avec la création des constantes des chemins.")
 
@@ -72,12 +74,9 @@ def save(temp_dir_save):
 
 	try:
 		#	COPIE
-		# On met tous les fichiers à sauvegarder dans un tableau.
-		files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
-
 		# On fait le tour du tableau avec la boucle for.
 		print("")
-		print("Début de la copie.")
+		print("Début de la copie...")
 		for file_or_dir in files_to_save:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.copytree(src, dst), un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination (logique) + le nom du dossier ou fichier à copier (logique mais moins évident). D'où l'utilisation d'os.path.basename !
@@ -108,7 +107,7 @@ def save(temp_dir_save):
 	try:
 		#	COMPRESSION
 		# Compression. Instruction pour le tar.gz.
-		print("Début de la compression.")
+		print("Début de la compression...")
 		with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
 			tar.add(directory_where_save, os.path.basename(directory_where_save))
 		print("Compression terminée.")
@@ -139,6 +138,15 @@ def restore(temp_dir_restore):
 	except:
 		exit("Problème avec la création des constantes.")
 
+
+	try:
+		#	CONTRÔLE DES EXISTANTS
+		# On fait l'état des lieux.
+		if os.path.exists(deb + temp_dir_restore + '.tar.gz') == False:
+			exit("Il semble qu'il manque l'archive pour faire une restauration.")
+	except:
+		exit("Problème avec le bloque contrôle.")
+		
 
 	try:
 		#	CRÉATION DU DOSSIER TEMPORAIRE
@@ -185,7 +193,7 @@ def restore(temp_dir_restore):
 				print("Fichier supprimé : " + os.path.basename(file_or_dir))
 			# Si c'est un dossier ou un fichier mais qu'il n'existe pas dans /var, on fait un message :
 			elif os.path.exists(file_or_dir) == False:
-				print("Ce fichier ou dossier semble avoir été supprimé : " + os.path.basename(file_or_dir))
+				print("Ce fichier ou dossier semble avoir déjà été supprimé : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
 				print("Il y a eu un problème avec " + file_or_dir)
@@ -207,33 +215,27 @@ def restore(temp_dir_restore):
 		for file_or_dir in files_to_copy:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 
-			print("0")
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
-			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				print("1")
+			if os.path.isdir(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
 				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
-				print("Dossier replacé : " + file_or_dir)
+				print("Dossier replacé : " + os.path.basename(file_or_dir))
 			# Si c'est un fichier et qu'il n'existe pas dans /var, on le met dans /var :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(file_or_dir) == False:
-				print("2")
-				shutil.copyfile(directory_where_restore + os.path.basename(file_or_dir), site_directory + os.path.basename(file_or_dir))
-				print("Fichier replacé : " + file_or_dir)
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
+				shutil.copyfile(file_or_dir, site_directory + os.path.basename(file_or_dir))
+				print("Fichier replacé : " + os.path.basename(file_or_dir))
 			# Si c'est un dossier qui existe déjà dans /var, on fait un message :
 			elif os.path.exists(file_or_dir) == False:
-				print("3")
 				print("Ce fichier ou dossier semble avoir été supprimé : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
-				print("4")
-				print("Il y a eu un problème avec " + file_or_dir)
-
+				print("Il y a eu un problème avec " + os.path.basename(file_or_dir))
 		print("Fin des replacements.")
 		print("")
 	except:
 		print("Problème avec le bloque de replacement. Le script passe maintenant à la BDD.")
 
 	shutil.rmtree(directory_where_restore)
-	os.remove(deb + "svg.py")
+#	os.remove("/home/debian/svg.py")
 
 #	try:
 		#	CONSTANTES MYSQL
