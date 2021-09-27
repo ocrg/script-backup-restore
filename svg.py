@@ -37,19 +37,6 @@ def save(temp_dir_save):
 	if not os.path.exists(directory_where_save):
 		os.mkdir(directory_where_save)
 
-
-#	try:
-		#	CRÉATION DU DOSSIER TEMPORAIRE
-		# Création du dossier temporaire pour travailler dedans par simplicité.
-#		if os.path.exists(directory_where_save) == False:
-#			os.mkdir(directory_where_save)
-#		else:
-#			shutil.rmtree(directory_where_save)
-#			os.mkdir(directory_where_save)
-#	except:
-#		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
-
-
 	#	CONSTANTES MYSQL
 	# Les constantes
 	DB_HOST = 'localhost'
