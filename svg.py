@@ -28,19 +28,26 @@ def save(temp_dir_save):
 	# On met tous les fichiers à sauvegarder dans un tableau.
 	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
 
+	#	CONTRÔLE
+	# Y a-t-il déjà une archive du même nom ? Si oui, exit. Sinon, c'est parfait, on continue.
+	if os.path.exists(deb + temp_dir_save + '.tar.gz') == True:
+		print("L'archive " + temp_dir_save + ".tar.gz semble déjà exister.")
+		exit(1)
+	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
+	if not os.path.exists(directory_where_save):
+		os.mkdir(directory_where_save)
 
-	try:
-		#	CRÉATION DOSSIER TEMPORAIRE
+
+#	try:
+		#	CRÉATION DU DOSSIER TEMPORAIRE
 		# Création du dossier temporaire pour travailler dedans par simplicité.
-		if os.path.exists(deb + temp_dir_save + '.tar.gz') == True:
-			exit("L'archive " + temp_dir_save + ".tar.gz existe déjà ! Fin du script, aucune sauvegarde effectuée.")
-		elif os.path.exists(deb + temp_dir_save) == False:
-			os.mkdir(deb + temp_dir_save)
-		else:
-			exit("Le dossier temporaire existe déjà ! Fin du script, aucune sauvegarde effectuée.")
-	except:
-		shutil.rmtree(directory_where_save)
-		exit("Problème avec la création du dossier temporaire.")
+#		if os.path.exists(directory_where_save) == False:
+#			os.mkdir(directory_where_save)
+#		else:
+#			shutil.rmtree(directory_where_save)
+#			os.mkdir(directory_where_save)
+#	except:
+#		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
 
 
 	#	CONSTANTES MYSQL
@@ -129,12 +136,14 @@ def restore(temp_dir_restore):
 	deb = '/home/debian/'
 	directory_where_restore = deb + temp_dir_restore + '/'
 
-	#	CONTRÔLE DES EXISTANTS
-	# On fait l'état des lieux.
+	#	CONTRÔLE
+	# Y a-t-il déjà une archive du même nom ? Si on, exit. Sinon, c'est parfait, on continue.
 	if not os.path.exists(deb + temp_dir_restore + '.tar.gz'):
 		print("L'archive " + temp_dir_restore + ".tar.gz semble ne pas exister.")
 		exit(1)
-
+	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
+	if not os.path.exists(directory_where_restore):
+		os.mkdir(directory_where_restore)
 
 	try:
 		#########	CRASH	#########
@@ -166,17 +175,6 @@ def restore(temp_dir_restore):
 	except:
 		shutil.rmtree(directory_where_restore)
 		exit("Problème avec le bloque de suppression.")
-
-
-	try:
-		#	CRÉATION DU DOSSIER TEMPORAIRE
-		# Création du dossier temporaire pour travailler dedans par simplicité.
-		if os.path.exists(directory_where_restore) == False:
-			os.mkdir(directory_where_restore)
-		else:
-			exit("Le dossier temporaire existe déjà ! Fin du script.")
-	except:
-		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
 
 
 	try:
@@ -229,7 +227,7 @@ def restore(temp_dir_restore):
 		#	CONSTANTES MYSQL
 		# Les constantes
 #		DB_HOST = 'localhost'
-#		BACKUP_PATH = deb + temp_dir_save + '/'
+#		BACKUP_PATH = deb + temp_dir_restore + '/'
 #		DB_USER = 'root'
 #		DB_USER_PASSWORD = 'debian'
 #		DB_NAME = 'wordpress'
@@ -253,7 +251,5 @@ def restore(temp_dir_restore):
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
 # Appel de la fonction. 
-
-#save('Backup_P9')
-
-restore('Backup_P9')
+save('Backup_P9')
+#restore('Backup_P9')
