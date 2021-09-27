@@ -20,16 +20,13 @@ import subprocess
 def save(temp_dir_save):
 
 
-	try :
-		#	CONSTANTES DES CHEMINS
-		# Constante du chemin de home.
-		deb = '/home/debian/'
-		# Constante du chemin du dossier temporaire.
-		directory_where_save = deb + temp_dir_save + '/'
-		# On met tous les fichiers à sauvegarder dans un tableau.
-		files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
-	except:
-		exit("Problème avec la création des constantes des chemins.")
+	#	CONSTANTES DES CHEMINS
+	# Constante du chemin de home.
+	deb = '/home/debian/'
+	# Constante du chemin du dossier temporaire.
+	directory_where_save = deb + temp_dir_save + '/'
+	# On met tous les fichiers à sauvegarder dans un tableau.
+	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
 
 
 	try:
@@ -46,16 +43,13 @@ def save(temp_dir_save):
 		exit("Problème avec la création du dossier temporaire.")
 
 
-	try:
-		#	CONSTANTES MYSQL
-		# Les constantes
-		DB_HOST = 'localhost'
-		BACKUP_PATH = deb + temp_dir_save + '/'
-		DB_USER = 'root'
-		DB_USER_PASSWORD = 'debian'
-		DB_NAME = 'wordpress'
-	except:
-		print("Problème dans la création des constantes de MySQLdump.")
+	#	CONSTANTES MYSQL
+	# Les constantes
+	DB_HOST = 'localhost'
+	BACKUP_PATH = deb + temp_dir_save + '/'
+	DB_USER = 'root'
+	DB_USER_PASSWORD = 'debian'
+	DB_NAME = 'wordpress'
 
 
 	try:
@@ -130,50 +124,20 @@ def save(temp_dir_save):
 def restore(temp_dir_restore):
 
 
-	try:
-		#	CONSTANTES DES CHEMINS
-		# Chemin debian home.
-		deb = '/home/debian/'
-		directory_where_restore = deb + temp_dir_restore + '/'
-	except:
-		exit("Problème avec la création des constantes.")
+	#	CONSTANTES DES CHEMINS
+	# Chemin debian home.
+	deb = '/home/debian/'
+	directory_where_restore = deb + temp_dir_restore + '/'
+
+	#	CONTRÔLE DES EXISTANTS
+	# On fait l'état des lieux.
+	if not os.path.exists(deb + temp_dir_restore + '.tar.gz'):
+		print("L'archive " + temp_dir_restore + ".tar.gz semble ne pas exister.")
+		exit(1)
 
 
 	try:
-		#	CONTRÔLE DES EXISTANTS
-		# On fait l'état des lieux.
-		if os.path.exists(deb + temp_dir_restore + '.tar.gz') == False:
-			exit("Il semble qu'il manque l'archive pour faire une restauration.")
-	except:
-		exit("Problème avec le bloque contrôle.")
-		
-
-	try:
-		#	CRÉATION DU DOSSIER TEMPORAIRE
-		# Création du dossier temporaire pour travailler dedans par simplicité.
-		if os.path.exists(directory_where_restore) == False:
-			os.mkdir(directory_where_restore)
-		else:
-			exit("Le dossier temporaire existe déjà ! Fin du script.")
-	except:
-		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
-
-
-	try:
-		#	DÉCOMPRESSION
-		# Décompression. Instruction pour le tar.gz.
-		print("Début de la décompression...")
-		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
-			tar.extractall(directory_where_restore)
-		print("Décompression terminée.")
-		print("")
-	except:
-		shutil.rmtree(directory_where_restore)
-		exit("Problème lors de la décompression. Fin du script.")
-
-
-	try:
-		#	SUPPRESSION
+		#########	CRASH	#########
 		# Tableau des fichiers existants sur le serveur et qui seront supprimé.
 		# Ce tableau sera ensuite utilisé pour replacer les fichiers de l'archive à leur place sur le serveur.
 		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
@@ -205,34 +169,58 @@ def restore(temp_dir_restore):
 
 
 	try:
-		#	REPLACEMENT
+		#	CRÉATION DU DOSSIER TEMPORAIRE
+		# Création du dossier temporaire pour travailler dedans par simplicité.
+		if os.path.exists(directory_where_restore) == False:
+			os.mkdir(directory_where_restore)
+		else:
+			exit("Le dossier temporaire existe déjà ! Fin du script.")
+	except:
+		exit("Problème avec la création du dossier, il semble qu'il existe déjà.")
+
+
+	try:
+		#	DÉCOMPRESSION
+		# Décompression. Instruction pour le tar.gz.
+		print("Début de la décompression...")
+		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
+			tar.extractall(directory_where_restore)
+		print("Décompression terminée.")
+		print("")
+	except:
+		shutil.rmtree(directory_where_restore)
+		exit("Problème lors de la décompression. Fin du script.")
+
+
+	try:
+		#	RESTAURATION
 		# On fait un tableau qui contient les fichiers à remettre en place.
 		files_to_copy = [directory_where_restore + 'wp-config.php',directory_where_restore + 'wp-content',directory_where_restore + '.htaccess']
 		# Constante du chemin du dossier du site.
 		site_directory = '/var/www/html/www.ocr.tp/'
 
-		print("Début des replacements...")
+		print("Début de la restauration...")
 		for file_or_dir in files_to_copy:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
 				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
-				print("Dossier replacé : " + os.path.basename(file_or_dir))
+				print("Dossier restauré : " + os.path.basename(file_or_dir))
 			# Si c'est un fichier et qu'il n'existe pas dans /var, on le met dans /var :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
 				shutil.copyfile(file_or_dir, site_directory + os.path.basename(file_or_dir))
-				print("Fichier replacé : " + os.path.basename(file_or_dir))
+				print("Fichier restauré : " + os.path.basename(file_or_dir))
 			# Si c'est un dossier qui existe déjà dans /var, on fait un message :
 			elif os.path.exists(file_or_dir) == False:
-				print("Ce fichier ou dossier semble avoir été supprimé : " + os.path.basename(file_or_dir))
+				print("Ce fichier ou dossier existe déjà dans www.ocr.tp : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
 				print("Il y a eu un problème avec " + os.path.basename(file_or_dir))
-		print("Fin des replacements.")
+		print("Fin de la restauration.")
 		print("")
 	except:
-		print("Problème avec le bloque de replacement. Le script passe maintenant à la BDD.")
+		print("Problème avec le bloque de restauration. Le script passe maintenant à la BDD.")
 
 	shutil.rmtree(directory_where_restore)
 #	os.remove("/home/debian/svg.py")
