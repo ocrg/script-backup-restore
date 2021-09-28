@@ -6,46 +6,75 @@
 # .yaml -> fichier de configuration.
 # python3 svg.py fichier_de_conf
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+# faire le trie dans les try
+# faire le truc selon les screenshot
+# partie mysql
+
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+
 
 # Les imports.
 import os
 import shutil
 import tarfile
+# subprocess execute une ligne de commande comme dans un terminal.
 import subprocess
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
-
-# Fonction de sauvegarde.
-def save(temp_dir_save):
 
 
-	#	CONSTANTES DES CHEMINS
-	# Constante du chemin de home.
-	deb = '/home/debian/'
-	# Constante du chemin du dossier temporaire.
-	directory_where_save = deb + temp_dir_save + '/'
-	# On met tous les fichiers à sauvegarder dans un tableau.
-	files_to_save = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+
+
+# Les constantes.
+
+# Constante du chemin de home.
+deb = '/home/debian/'
+
+# Constante du chemin du dossier temporaire.
+temp_directory = deb + temp_dir + '/'
+
+# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
+files_in_site = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+# Tableau qui contient les fichiers à remettre en place.
+files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
+
+# Les constantes MySQL.
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_USER_PASSWORD = 'debian'
+DB_NAME = 'wordpress'
+BACKUP_PATH = deb + temp_dir + '/'
+
+# Constante du chemin du dossier du site.
+site_directory = '/var/www/html/www.ocr.tp/'
+
+# Nom de la backup.
+name_of_backup = 'Backup_P9'
+
+
+
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+
+
+### VÉRIFICATION ET DOSSIER TEMPORAIRE ###
+def create_tmp_save(deb, name_of_backup, temp_directory):
 
 	#	CONTRÔLE
-	# Y a-t-il déjà une archive du même nom ? Si oui, exit. Sinon, c'est parfait, on continue.
-	if os.path.exists(deb + temp_dir_save + '.tar.gz') == True:
-		print("L'archive " + temp_dir_save + ".tar.gz semble déjà exister.")
+	# S'il y a déjà une archive du même nom, exit. Sinon, on continue.
+	if os.path.exists(deb + name_of_backup + '.tar.gz') == True:
+		print("L'archive " + name_of_backup + ".tar.gz semble déjà exister.")
 		exit(1)
-	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
-	if not os.path.exists(directory_where_save):
-		os.mkdir(directory_where_save)
-
-	#	CONSTANTES MYSQL
-	# Les constantes
-	DB_HOST = 'localhost'
-	BACKUP_PATH = deb + temp_dir_save + '/'
-	DB_USER = 'root'
-	DB_USER_PASSWORD = 'debian'
-	DB_NAME = 'wordpress'
+	# Si le chemin /home/debian/temp_directory n'existe pas, on créer le dossier temporaire.
+	if not os.path.exists(temp_directory):
+		os.mkdir(temp_directory)
 
 
+
+### SQL_DUMP ###
+def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
@@ -60,27 +89,30 @@ def save(temp_dir_save):
 		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
 
+
+### COPIE DES FICHIERS ###
+def copy(files_in_site, temp_directory):
 	try:
 		#	COPIE
 		# On fait le tour du tableau avec la boucle for.
 		print("")
 		print("Début de la copie...")
-		for file_or_dir in files_to_save:
+		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.copytree(src, dst), un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination (logique) + le nom du dossier ou fichier à copier (logique mais moins évident). D'où l'utilisation d'os.path.basename !
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple. Pratique !
 
 			# Si c'est un dossier et qu'il n'existe pas dans le dossier temporaire :
-			if os.path.isdir(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
-				shutil.copytree(file_or_dir, directory_where_save + os.path.basename(file_or_dir))
+			if os.path.isdir(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == False:
+				shutil.copytree(file_or_dir, temp_directory + os.path.basename(file_or_dir))
 			# Si c'est un fichier et qu'il n'existe pas dans le dossier temporaire :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == False:
-				shutil.copyfile(file_or_dir, directory_where_save + os.path.basename(file_or_dir))
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == False:
+				shutil.copyfile(file_or_dir, temp_directory + os.path.basename(file_or_dir))
 			# Si c'est un dossier et qu'il existe déjà dans le dossier temporaire :
-			elif os.path.isdir(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == True:
+			elif os.path.isdir(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == True:
 				print("Ce dossier existe déjà dans le dossier temporaire : " + file_or_dir)
 			# Si c'est un fichier et qu'il existe déjà dans le dossier temporaire :
-			elif os.path.isfile(file_or_dir) == True and os.path.exists(directory_where_save + os.path.basename(file_or_dir)) == True:
+			elif os.path.isfile(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == True:
 				print("Ce fichier existe déjà dans le dossier temporaire : " + file_or_dir)			
 			# Si anomalie :
 			else:
@@ -88,59 +120,60 @@ def save(temp_dir_save):
 		print("Fin de la copie.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_save)
+		shutil.rmtree(temp_directory)
 		exit("Problème avec le bloque de copie.")
 
 
+
+### CRÉATION DU TAR.GZ ET NETTOYAGE DU DOSSIER TEMPORAIRE ###
+def compress_clean(deb, temp_directory, temp_dir):
 	try:
 		#	COMPRESSION
 		# Compression. Instruction pour le tar.gz.
 		print("Début de la compression...")
-		with tarfile.open(deb + temp_dir_save + '.tar.gz', "w:gz") as tar:
-			tar.add(directory_where_save, os.path.basename(directory_where_save))
+		with tarfile.open(deb + temp_directory + '.tar.gz', "w:gz") as tar:
+			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("Compression terminée.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_save)
+		shutil.rmtree(temp_directory)
 		exit("Problème avec le bloque tarfile.")
 
 
 	try:
 		#	SUPPRESSION DOSSIER TEMPORAIRE
 		# Suppression du dossier temporaire.
-		shutil.rmtree(directory_where_save)
+		shutil.rmtree(temp_directory)
 		print("Backup terminée avec succès !")
 	except:
 		exit("Problème avec le bloque de suppression du dossier temporaire.")
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
-
-def restore(temp_dir_restore):
 
 
-	#	CONSTANTES DES CHEMINS
-	# Chemin debian home.
-	deb = '/home/debian/'
-	directory_where_restore = deb + temp_dir_restore + '/'
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+
+
+### VÉRIFICATION ET DOSSIER TEMPORAIRE ###
+def create_tmp_restore(deb, name_of_backup, temp_directory):
 
 	#	CONTRÔLE
 	# Y a-t-il déjà une archive du même nom ? Si on, exit. Sinon, c'est parfait, on continue.
-	if not os.path.exists(deb + temp_dir_restore + '.tar.gz'):
-		print("L'archive " + temp_dir_restore + ".tar.gz semble ne pas exister.")
+	if not os.path.exists(deb + name_of_backup + '.tar.gz'):
+		print("L'archive " + name_of_backup + ".tar.gz ne semble pas exister.")
 		exit(1)
 	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
-	if not os.path.exists(directory_where_restore):
-		os.mkdir(directory_where_restore)
+	if not os.path.exists(temp_directory):
+		os.mkdir(temp_directory)
 
+
+
+### FONCTION POUR SIMULER LE CRASH ###
+def crash(files_in_site):
 	try:
-		#########	CRASH	#########
-		# Tableau des fichiers existants sur le serveur et qui seront supprimé.
-		# Ce tableau sera ensuite utilisé pour replacer les fichiers de l'archive à leur place sur le serveur.
-		files_to_delete = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
-
 		# On fait le tour du tableau avec la boucle for.
 		print("Début de la suppression des fichiers existants...")
-		for file_or_dir in files_to_delete:
+		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
 			# Si c'est un dossier et que ça existe, on le supprime dans /var :
@@ -160,34 +193,34 @@ def restore(temp_dir_restore):
 		print("Fin de la suppression.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_restore)
+		shutil.rmtree(temp_directory)
 		exit("Problème avec le bloque de suppression.")
 
 
+
+### EXCTRATION ###
+def extract(deb, name_of_backup, temp_directory):
 	try:
 		#	DÉCOMPRESSION
 		# Décompression. Instruction pour le tar.gz.
 		print("Début de la décompression...")
-		with tarfile.open(deb + temp_dir_restore + '.tar.gz') as tar:
-			tar.extractall(directory_where_restore)
+		with tarfile.open(deb + name_of_backup + '.tar.gz') as tar:
+			tar.extractall(temp_directory)
 		print("Décompression terminée.")
 		print("")
 	except:
-		shutil.rmtree(directory_where_restore)
+		shutil.rmtree(temp_directory)
 		exit("Problème lors de la décompression. Fin du script.")
 
 
+
+### RESTAURATION ###
+def restauration(files_to_restore, site_directory, temp_directory):
 	try:
 		#	RESTAURATION
-		# On fait un tableau qui contient les fichiers à remettre en place.
-		files_to_copy = [directory_where_restore + 'wp-config.php',directory_where_restore + 'wp-content',directory_where_restore + '.htaccess']
-		# Constante du chemin du dossier du site.
-		site_directory = '/var/www/html/www.ocr.tp/'
-
 		print("Début de la restauration...")
-		for file_or_dir in files_to_copy:
+		for file_or_dir in files_to_restore:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
-
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
 				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
@@ -207,14 +240,16 @@ def restore(temp_dir_restore):
 	except:
 		print("Problème avec le bloque de restauration. Le script passe maintenant à la BDD.")
 
-	shutil.rmtree(directory_where_restore)
+
+
+	shutil.rmtree(temp_directory)
 #	os.remove("/home/debian/svg.py")
 
 #	try:
 		#	CONSTANTES MYSQL
 		# Les constantes
 #		DB_HOST = 'localhost'
-#		BACKUP_PATH = deb + temp_dir_restore + '/'
+#		BACKUP_PATH = deb + name_of_backup + '/'
 #		DB_USER = 'root'
 #		DB_USER_PASSWORD = 'debian'
 #		DB_NAME = 'wordpress'
@@ -237,6 +272,15 @@ def restore(temp_dir_restore):
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 
-# Appel de la fonction. 
-save('Backup_P9')
-#restore('Backup_P9')
+# Appel de la fonction pour sauvegarder.
+create_tmp_save(deb, name_of_backup, temp_directory)
+sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+copy(files_in_site, temp_directory)
+compress_clean(deb, temp_directory, temp_dir)
+
+
+# Appels des fonctions pour restaurer.
+#create_tmp_restore(deb, name_of_backup, temp_directory)
+#crash(files_in_site)
+#extract(deb, name_of_backup, temp_directory)
+#restauration(files_to_restore, site_directory, temp_directory)
