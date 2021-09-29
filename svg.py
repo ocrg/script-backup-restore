@@ -11,6 +11,8 @@
 # partie mysql
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
 
@@ -24,16 +26,19 @@ import subprocess
 
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
 
 # Les constantes.
-
 # Constante du chemin de home.
 deb = '/home/debian/'
+# Nom de la backup.
+name_of_backup = 'Backup_P9'
 
 # Constante du chemin du dossier temporaire.
-temp_directory = deb + temp_dir + '/'
+temp_directory = deb + name_of_backup + '/'
 
 # Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
 files_in_site = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
@@ -45,16 +50,16 @@ DB_HOST = 'localhost'
 DB_USER = 'root'
 DB_USER_PASSWORD = 'debian'
 DB_NAME = 'wordpress'
-BACKUP_PATH = deb + temp_dir + '/'
+BACKUP_PATH = deb + name_of_backup + '/'
 
 # Constante du chemin du dossier du site.
 site_directory = '/var/www/html/www.ocr.tp/'
 
-# Nom de la backup.
-name_of_backup = 'Backup_P9'
 
 
-
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
@@ -131,12 +136,17 @@ def compress_clean(deb, temp_directory, temp_dir):
 		#	COMPRESSION
 		# Compression. Instruction pour le tar.gz.
 		print("Début de la compression...")
+		print("1")
 		with tarfile.open(deb + temp_directory + '.tar.gz', "w:gz") as tar:
+			print("2")
 			tar.add(temp_directory, os.path.basename(temp_directory))
+			print("3")
 		print("Compression terminée.")
 		print("")
 	except:
+		print("4")
 		shutil.rmtree(temp_directory)
+		print("5")
 		exit("Problème avec le bloque tarfile.")
 
 
@@ -150,6 +160,8 @@ def compress_clean(deb, temp_directory, temp_dir):
 
 
 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
@@ -270,13 +282,16 @@ def restauration(files_to_restore, site_directory, temp_directory):
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 #		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
 
 # Appel de la fonction pour sauvegarder.
 create_tmp_save(deb, name_of_backup, temp_directory)
 sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
 copy(files_in_site, temp_directory)
-compress_clean(deb, temp_directory, temp_dir)
+compress_clean(deb, temp_directory, name_of_backup)
 
 
 # Appels des fonctions pour restaurer.
