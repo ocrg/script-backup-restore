@@ -131,22 +131,17 @@ def copy(files_in_site, temp_directory):
 
 
 ### CRÉATION DU TAR.GZ ET NETTOYAGE DU DOSSIER TEMPORAIRE ###
-def compress_clean(deb, temp_directory, temp_dir):
+def compress_clean(deb, temp_directory, name_of_backup):
 	try:
 		#	COMPRESSION
 		# Compression. Instruction pour le tar.gz.
 		print("Début de la compression...")
-		print("1")
-		with tarfile.open(deb + temp_directory + '.tar.gz', "w:gz") as tar:
-			print("2")
+		with tarfile.open(deb + name_of_backup + '.tar.gz', "w:gz") as tar:
 			tar.add(temp_directory, os.path.basename(temp_directory))
-			print("3")
 		print("Compression terminée.")
 		print("")
 	except:
-		print("4")
 		shutil.rmtree(temp_directory)
-		print("5")
 		exit("Problème avec le bloque tarfile.")
 
 
@@ -288,14 +283,13 @@ def restauration(files_to_restore, site_directory, temp_directory):
 
 
 # Appel de la fonction pour sauvegarder.
-create_tmp_save(deb, name_of_backup, temp_directory)
-sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
-copy(files_in_site, temp_directory)
-compress_clean(deb, temp_directory, name_of_backup)
-
+#create_tmp_save(deb, name_of_backup, temp_directory)
+#sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+#copy(files_in_site, temp_directory)
+#compress_clean(deb, temp_directory, name_of_backup)
 
 # Appels des fonctions pour restaurer.
-#create_tmp_restore(deb, name_of_backup, temp_directory)
-#crash(files_in_site)
-#extract(deb, name_of_backup, temp_directory)
-#restauration(files_to_restore, site_directory, temp_directory)
+create_tmp_restore(deb, name_of_backup, temp_directory)
+crash(files_in_site)
+extract(deb, name_of_backup, temp_directory)
+restauration(files_to_restore, site_directory, temp_directory)
