@@ -69,8 +69,8 @@ def create_tmp_save(deb, name_of_backup, temp_directory):
 
 	#	CONTRÔLE
 	# S'il y a déjà une archive du même nom, exit. Sinon, on continue.
-	if os.path.exists(deb + name_of_backup + '.tar.gz') == True:
-		print("L'archive " + name_of_backup + ".tar.gz semble déjà exister.")
+	if os.path.exists(deb + name_of_backup + '.tar.bz2') == True:
+		print("L'archive " + name_of_backup + ".tar.bz2 semble déjà exister.")
 		exit(1)
 	# Si le chemin /home/debian/temp_directory n'existe pas, on créer le dossier temporaire.
 	if not os.path.exists(temp_directory):
@@ -130,13 +130,13 @@ def copy(files_in_site, temp_directory):
 
 
 
-### CRÉATION DU TAR.GZ ET NETTOYAGE DU DOSSIER TEMPORAIRE ###
+### CRÉATION DU TAR.BZ2 ET NETTOYAGE DU DOSSIER TEMPORAIRE ###
 def compress_clean(deb, temp_directory, name_of_backup):
 	try:
 		#	COMPRESSION
-		# Compression. Instruction pour le tar.gz.
+		# Compression. Instruction pour le tar.bz2.
 		print("Début de la compression...")
-		with tarfile.open(deb + name_of_backup + '.tar.gz', "w:gz") as tar:
+		with tarfile.open(deb + name_of_backup + '.tar.bz2', "w:bz2") as tar:
 			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("Compression terminée.")
 		print("")
@@ -166,8 +166,8 @@ def create_tmp_restore(deb, name_of_backup, temp_directory):
 
 	#	CONTRÔLE
 	# Y a-t-il déjà une archive du même nom ? Si on, exit. Sinon, c'est parfait, on continue.
-	if not os.path.exists(deb + name_of_backup + '.tar.gz'):
-		print("L'archive " + name_of_backup + ".tar.gz ne semble pas exister.")
+	if not os.path.exists(deb + name_of_backup + '.tar.bz2'):
+		print("L'archive " + name_of_backup + ".tar.bz2 ne semble pas exister.")
 		exit(1)
 	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
 	if not os.path.exists(temp_directory):
@@ -209,9 +209,9 @@ def crash(files_in_site):
 def extract(deb, name_of_backup, temp_directory):
 	try:
 		#	DÉCOMPRESSION
-		# Décompression. Instruction pour le tar.gz.
+		# Décompression. Instruction pour le tar.bz2.
 		print("Début de la décompression...")
-		with tarfile.open(deb + name_of_backup + '.tar.gz') as tar:
+		with tarfile.open(deb + name_of_backup + '.tar.bz2') as tar:
 			tar.extractall(temp_directory)
 		print("Décompression terminée.")
 		print("")
