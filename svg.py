@@ -254,6 +254,9 @@ def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
+
+		NE FONCTIONNE PAS !!!
+		
 		dumpcmd = "mysqldump -u " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
 		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
 		subprocess.run(dumpcmd, shell=True)
