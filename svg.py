@@ -249,19 +249,29 @@ def restauration(files_to_restore, site_directory, temp_directory):
 
 
 
+### SQL_DUMP ###
+def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
+	try:
+		#	MYSQLDUMP
+		# La ligne de code qui sera exécutée par subprocess.
+		dumpcmd = "mysqldump -u " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
+		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
+		subprocess.run(dumpcmd, shell=True)
+
+		# Un print pour voir ce qui est clairement saisie.
+		print(dumpcmd)
+	except:
+		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
+		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
+
+
 	shutil.rmtree(temp_directory)
 #	os.remove("/home/debian/svg.py")
 
-#	try:
-		#	CONSTANTES MYSQL
-		# Les constantes
-#		DB_HOST = 'localhost'
-#		BACKUP_PATH = deb + name_of_backup + '/'
-#		DB_USER = 'root'
-#		DB_USER_PASSWORD = 'debian'
-#		DB_NAME = 'wordpress'
-#	except:
-#		print("Problème dans la création des constantes de MySQLdump.")
+
+
+# FORCement NOK
+# dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + db + " > " + pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql"
 
 
 #	try:
