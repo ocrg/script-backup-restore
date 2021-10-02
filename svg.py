@@ -84,11 +84,7 @@ def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
 		dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
-		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
 		subprocess.run(dumpcmd, shell=True)
-
-		# Un print pour voir ce qui est clairement saisie.
-		print(dumpcmd)
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
@@ -225,7 +221,7 @@ def extract(deb, name_of_backup, temp_directory):
 def restauration(files_to_restore, site_directory, temp_directory):
 	try:
 		#	RESTAURATION
-		print("Début de la restauration...")
+		print("Début de la restauration des fichiers...")
 		for file_or_dir in files_to_restore:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
@@ -242,7 +238,7 @@ def restauration(files_to_restore, site_directory, temp_directory):
 			# S'il y a anomalie :
 			else:
 				print("Il y a eu un problème avec " + os.path.basename(file_or_dir))
-		print("Fin de la restauration.")
+		print("Fin de la restauration des fichiers.")
 		print("")
 	except:
 		print("Problème avec le bloque de restauration. Le script passe maintenant à la BDD.")
@@ -253,42 +249,23 @@ def restauration(files_to_restore, site_directory, temp_directory):
 def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
+		print("Début de la restauration MySQL...")
 		# La ligne de code qui sera exécutée par subprocess.
-
-		NE FONCTIONNE PAS !!!
-		
-		dumpcmd = "mysqldump -u " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
-		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
+		dumpcmd = "mysql -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
-
 		# Un print pour voir ce qui est clairement saisie.
-		print(dumpcmd)
+		print("Fin de la restauration MySQL.")
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
 
 	shutil.rmtree(temp_directory)
+	print("")
+	print("Fin de la restauration.")
 #	os.remove("/home/debian/svg.py")
 
 
-
-# FORCement NOK
-# dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + db + " > " + pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql"
-
-
-#	try:
-		#	MYSQLDUMP
-		# La ligne de code qui sera exécutée par subprocess.
-#		dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
-		# os.system(dumpcmd) fonctionne aussi, mais c'est une commande qui sera bientôt obsolète.
-#		subprocess.run(dumpcmd, shell=True)
-
-		# Un print pour voir ce qui est clairement saisie.
-#		print(dumpcmd)
-#	except:
-		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
-#		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -305,4 +282,5 @@ def sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 create_tmp_restore(deb, name_of_backup, temp_directory)
 crash(files_in_site)
 extract(deb, name_of_backup, temp_directory)
+sql_dump(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
 restauration(files_to_restore, site_directory, temp_directory)
