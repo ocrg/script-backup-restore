@@ -201,7 +201,7 @@ def crash(files_in_site):
 
 
 
-### EXCTRATION ###
+### EXTRATION ###
 def extract(deb, name_of_backup, temp_directory):
 	try:
 		#	DÉCOMPRESSION
@@ -218,10 +218,6 @@ def extract(deb, name_of_backup, temp_directory):
 
 
 ### RESTAURATION ###
-
-#files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
-#site_directory = '/var/www/html/www.ocr.tp/'
-
 def restauration(files_to_restore, site_directory, temp_directory):
 	try:
 		#	RESTAURATION
@@ -298,5 +294,5 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 create_tmp_restore(deb, name_of_backup, temp_directory)
 crash(files_in_site)
 extract(deb, name_of_backup, temp_directory)
-#sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
-#restauration(files_to_restore, site_directory, temp_directory)
+restauration(files_to_restore, site_directory, temp_directory)
+sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
