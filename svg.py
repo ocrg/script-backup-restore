@@ -6,10 +6,6 @@
 # .yaml -> fichier de configuration.
 # python3 svg.py fichier_de_conf
 
-# faire le trie dans les try
-# faire le truc selon les screenshot
-# partie mysql
-
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -97,7 +93,7 @@ def copy(files_in_site, temp_directory):
 		#	COPIE
 		# On fait le tour du tableau avec la boucle for.
 		print("")
-		print("Début de la copie...")
+		print("Début de la copie des fichiers...")
 		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.copytree(src, dst), un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination (logique) + le nom du dossier ou fichier à copier (logique mais moins évident). D'où l'utilisation d'os.path.basename !
@@ -118,7 +114,7 @@ def copy(files_in_site, temp_directory):
 			# Si anomalie :
 			else:
 				print("Il y a eu un problème avec" + file_or_dir)
-		print("Fin de la copie.")
+		print("Fin de la copie des fichiers.")
 		print("")
 	except:
 		shutil.rmtree(temp_directory)
@@ -222,33 +218,21 @@ def restauration(files_to_restore, site_directory, temp_directory):
 	try:
 		#	RESTAURATION
 		print("Début de la restauration des fichiers...")
-		print(files_to_restore)
 		for file_or_dir in files_to_restore:
-			print("a")
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
-				print("b")
 				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
-				print(file_or_dir)
-				print(site_directory + os.path.basename(file_or_dir))
-				print("c")
 				print("Dossier restauré : " + os.path.basename(file_or_dir))
 			# Si c'est un fichier et qu'il n'existe pas dans /var, on le met dans /var :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
-				print("c")
 				shutil.copyfile(file_or_dir, site_directory + os.path.basename(file_or_dir))
-				print(file_or_dir)
-				print(site_directory + os.path.basename(file_or_dir))
-				print("d")
 				print("Fichier restauré : " + os.path.basename(file_or_dir))
 			# Si c'est un dossier qui existe déjà dans /var, on fait un message :
 			elif os.path.exists(file_or_dir) == False:
-				print("e")
 				print("Ce fichier ou dossier existe déjà dans www.ocr.tp : " + os.path.basename(file_or_dir))
 			# S'il y a anomalie :
 			else:
-				print("f")
 				print("Il y a eu un problème avec " + os.path.basename(file_or_dir))
 		print("Fin de la restauration des fichiers.")
 		print("")
@@ -291,8 +275,8 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 #compress_clean(deb, temp_directory, name_of_backup)
 
 # Appels des fonctions pour restaurer.
-create_tmp_restore(deb, name_of_backup, temp_directory)
-crash(files_in_site)
-extract(deb, name_of_backup, temp_directory)
-restauration(files_to_restore, site_directory, temp_directory)
-sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+#create_tmp_restore(deb, name_of_backup, temp_directory)
+#crash(files_in_site)
+#extract(deb, name_of_backup, temp_directory)
+#restauration(files_to_restore, site_directory, temp_directory)
+#sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
