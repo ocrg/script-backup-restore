@@ -1,0 +1,29 @@
+# Jamais de tabulation !
+# C'est une syntaxe basé sur l'indentation.
+# Des : à la place des =
+# Les tableaux sont formatés différemment, les virgules remplacées par des tirets.
+# On indente de 2 espaces.
+# On ne peut pas faire d'assemblage de variable dans un fichier yaml, donc pas de "deb + name_of_backup".
+
+language : py
+version : 3.9.2
+
+constantes :
+  # Constante du chemin de home.
+  deb : /home/debian/
+  # Nom de la backup.
+  name_of_backup : Backup_P6
+  # Constante du chemin du dossier du site.
+  site_directory : /var/www/html/www.ocr.tp/
+
+  # Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
+  files_in_site :
+    - /var/www/html/www.ocr.tp/wp-config.php
+    - /var/www/html/www.ocr.tp/wp-content
+    - /var/www/html/www.ocr.tp/.htaccess
+
+  # Les constantes MySQL.
+  DB_HOST : localhost
+  DB_USER : root
+  DB_USER_PASSWORD : debian
+  DB_NAME : wordpress
