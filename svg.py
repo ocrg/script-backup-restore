@@ -6,7 +6,8 @@
 # .yaml -> fichier de configuration.
 # python3 svg.py fichier_de_conf
 
-# partie backup on a ajouter ça : --add-drop-table
+# Partie SQL_DUMP du Backup modifié, on a ajouté ça : --add-drop-table
+# À voir si ça fonctionne, normalement ça marque dans le .sql que lors de la prochaine injection, il faut d'abord faire un raz de la table avant d'ajouter "ça", le contenu dudit .sql. On n'aura donc plus des .sql de 1.4mo par exemple, à vérifier.
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
