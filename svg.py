@@ -6,6 +6,8 @@
 # .yaml -> fichier de configuration.
 # python3 svg.py fichier_de_conf
 
+# partie backup on a ajouter ça : --add-drop-table
+
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -16,6 +18,7 @@
 import os
 import shutil
 import tarfile
+import yaml
 # subprocess execute une ligne de commande comme dans un terminal.
 import subprocess
 
@@ -27,29 +30,45 @@ import subprocess
 
 
 
+def read_yaml("config.yaml"):
+	# Fonction yaml pour récupérer les données du fichier.
+	return datas
+
+vars = read_yaml("config.yaml")
+print(vars['constantes'])
+
 # Les constantes.
 # Constante du chemin de home.
-deb = '/home/debian/'
+deb = vars['constantes']['deb']
+print(deb)
 # Nom de la backup.
-name_of_backup = 'Backup_P9'
-
+name_of_backup = vars['constantes']['name_of_backup']
+print(name_of_backup)
 # Constante du chemin du dossier temporaire.
 temp_directory = deb + name_of_backup + '/'
-
+print(temp_directory)
 # Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
-files_in_site = ['/var/www/html/www.ocr.tp/wp-config.php','/var/www/html/www.ocr.tp/wp-content','/var/www/html/www.ocr.tp/.htaccess']
+files_in_site = vars['constantes']['files_in_site']
+print(files_in_site)
 # Tableau qui contient les fichiers à remettre en place.
 files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
+print(files_to_restore)
 
 # Les constantes MySQL.
-DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_USER_PASSWORD = 'debian'
-DB_NAME = 'wordpress'
+DB_HOST = vars['constantes']['DB_HOST']
+print(DB_HOST)
+DB_USER = vars['constantes']['DB_USER']
+print(DB_USER)
+DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
+print(DB_USER_PASSWORD)
+DB_NAME = vars['constantes']['DB_NAME']
+print(DB_NAME)
 BACKUP_PATH = deb + name_of_backup + '/'
+print(BACKUP_PATH)
 
 # Constante du chemin du dossier du site.
-site_directory = '/var/www/html/www.ocr.tp/'
+site_directory = vars['constantes']['site_directory']
+print(site_directory)
 
 
 
@@ -79,7 +98,7 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
-		dumpcmd = "mysqldump -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
+		dumpcmd = "mysqldump --add-drop-table -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
@@ -269,10 +288,10 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 
 
 # Appel de la fonction pour sauvegarder.
-create_tmp_save(deb, name_of_backup, temp_directory)
-sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
-copy(files_in_site, temp_directory)
-compress_clean(deb, temp_directory, name_of_backup)
+#create_tmp_save(deb, name_of_backup, temp_directory)
+#sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+#copy(files_in_site, temp_directory)
+#compress_clean(deb, temp_directory, name_of_backup)
 
 # Appels des fonctions pour restaurer.
 #create_tmp_restore(deb, name_of_backup, temp_directory)
