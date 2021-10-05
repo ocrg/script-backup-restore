@@ -3,9 +3,6 @@
 
 # Projet 6 et 9, sauvegarde wordpress.
 
-# .yaml -> fichier de configuration.
-# python3 svg.py fichier_de_conf
-
 # Partie SQL_DUMP du Backup modifié, on a ajouté ça : --add-drop-table
 # À voir si ça fonctionne, normalement ça marque dans le .sql que lors de la prochaine injection, il faut d'abord faire un raz de la table avant d'ajouter "ça", le contenu dudit .sql. On n'aura donc plus des .sql de 1.4mo par exemple, à vérifier.
 
@@ -37,6 +34,8 @@ def read_yaml("config.yaml"):
 
 vars = read_yaml("config.yaml")
 print(vars['constantes'])
+
+
 
 # Les constantes.
 # Constante du chemin de home.
