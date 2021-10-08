@@ -28,8 +28,9 @@ import subprocess
 
 
 with open("config.yaml", 'r') as stream:
-	print(yaml.safe_load(stream))
+	cfg = yaml.safe_load(stream)
 
+print(cfg["constantes"]["deb"])
 
 #def read_yaml(config):
 	# Fonction yaml pour récupérer les données du fichier.
