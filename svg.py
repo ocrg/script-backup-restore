@@ -35,35 +35,24 @@ with open("config.yaml", 'r') as stream:
 # Les constantes.
 # Constante du chemin de home.
 deb = vars['constantes']['deb']
-print(deb)
 # Nom de la backup.
 name_of_backup = vars['constantes']['name_of_backup']
-print(name_of_backup)
 # Constante du chemin du dossier temporaire.
 temp_directory = deb + name_of_backup + '/'
-print(temp_directory)
 # Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
 files_in_site = vars['constantes']['files_in_site']
-print(files_in_site)
 # Tableau qui contient les fichiers à remettre en place.
 files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
-print(files_to_restore)
 
 # Les constantes MySQL.
 DB_HOST = vars['constantes']['DB_HOST']
-print(DB_HOST)
 DB_USER = vars['constantes']['DB_USER']
-print(DB_USER)
 DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
-print(DB_USER_PASSWORD)
 DB_NAME = vars['constantes']['DB_NAME']
-print(DB_NAME)
 BACKUP_PATH = deb + name_of_backup + '/'
-print(BACKUP_PATH)
 
 # Constante du chemin du dossier du site.
 site_directory = vars['constantes']['site_directory']
-print(site_directory)
 
 
 
@@ -93,7 +82,10 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
+		
+		# En commantaire le truc d'origine.
 		dumpcmd = "mysqldump --add-drop-table -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
+		print(dumpcmd)
 		subprocess.run(dumpcmd, shell=True)
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
