@@ -27,15 +27,16 @@ import subprocess
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
+with open("config.yaml", 'r') as stream:
+	print(yaml.safe_load(stream))
 
-def read_yaml("config.yaml"):
+
+#def read_yaml(config):
 	# Fonction yaml pour récupérer les données du fichier.
-	return datas
+#	return config
 
-vars = read_yaml("config.yaml")
-print(vars['constantes'])
-
-
+#vars = read_yaml(stream)
+#print(vars['constantes'])
 
 # Les constantes.
 # Constante du chemin de home.
