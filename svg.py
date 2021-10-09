@@ -25,6 +25,8 @@ import subprocess
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
+
+### LECTURE DU FICHIER YAML ###
 try:
 	# Récupération du contenu du yaml.
 	with open("config.yaml", 'r') as stream:
