@@ -3,9 +3,6 @@
 
 # Projet 6 et 9, sauvegarde wordpress.
 
-# Partie SQL_DUMP du Backup modifié, on a ajouté ça : --add-drop-table
-# À voir si ça fonctionne, normalement ça marque dans le .sql que lors de la prochaine injection, il faut d'abord faire un raz de la table avant d'ajouter "ça", le contenu dudit .sql. On n'aura donc plus des .sql de 1.4mo par exemple, à vérifier.
-
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -16,6 +13,7 @@
 import os
 import shutil
 import tarfile
+# yaml nécessite d'installer "pip" puis de faire "sudo pip install PyYAML"
 import yaml
 # subprocess execute une ligne de commande comme dans un terminal.
 import subprocess
@@ -27,17 +25,20 @@ import subprocess
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 
+try:
+	# Récupération du contenu du yaml.
+	with open("config.yaml", 'r') as stream:
+		vars = yaml.safe_load(stream)
+except:
+	exit("Pas de fichier du nom de config.yaml")
 
-# Récupération du contenu du yaml.
-with open("config.yaml", 'r') as stream:
-	vars = yaml.safe_load(stream)
 
 # Les constantes.
 # Constante du chemin de home.
 deb = vars['constantes']['deb']
 # Nom de la backup.
 name_of_backup = vars['constantes']['name_of_backup']
-# Constante du chemin du dossier temporaire.
+# Constante du chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
 temp_directory = deb + name_of_backup + '/'
 # Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
 files_in_site = vars['constantes']['files_in_site']
@@ -85,11 +86,11 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		
 		# En commantaire le truc d'origine.
 		dumpcmd = "mysqldump --add-drop-table -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
-		print(dumpcmd)
 		subprocess.run(dumpcmd, shell=True)
 	except:
+		shutil.rmtree(temp_directory)
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
-		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
+		exit("Problème avec le bloque MySQLdump. Fin du script.")
 
 
 
@@ -139,7 +140,6 @@ def compress_clean(deb, temp_directory, name_of_backup):
 		print("Compression terminée.")
 		print("")
 	except:
-		shutil.rmtree(temp_directory)
 		exit("Problème avec le bloque tarfile.")
 
 
@@ -243,7 +243,7 @@ def restauration(files_to_restore, site_directory, temp_directory):
 		print("Fin de la restauration des fichiers.")
 		print("")
 	except:
-		exit("Problème avec le bloque de restauration. Le script passe maintenant à la BDD.")
+		exit("Problème avec le bloque de restauration.")
 
 
 
@@ -265,14 +265,12 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	shutil.rmtree(temp_directory)
 	print("")
 	print("Fin de la restauration.")
-#	os.remove("/home/debian/svg.py")
 
 
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
 
 # Appel de la fonction pour sauvegarder.
 create_tmp_save(deb, name_of_backup, temp_directory)
