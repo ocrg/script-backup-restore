@@ -261,7 +261,7 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		print("Fin de la restauration MySQL.")
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
-		print("Problème avec le bloque MySQLdump. Le script continue quand même.")
+		exit("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
 
 	shutil.rmtree(temp_directory)
