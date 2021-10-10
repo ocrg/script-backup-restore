@@ -274,15 +274,41 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
+
+
 # Appel de la fonction pour sauvegarder.
-create_tmp_save(deb, name_of_backup, temp_directory)
-sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
-copy(files_in_site, temp_directory)
-compress_clean(deb, temp_directory, name_of_backup)
+def backup():
+	create_tmp_save(deb, name_of_backup, temp_directory)
+	sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+	copy(files_in_site, temp_directory)
+	compress_clean(deb, temp_directory, name_of_backup)
 
 # Appels des fonctions pour restaurer.
-#create_tmp_restore(deb, name_of_backup, temp_directory)
-#crash(files_in_site)
-#extract(deb, name_of_backup, temp_directory)
-#restauration(files_to_restore, site_directory, temp_directory)
-#sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+def restore():
+	create_tmp_restore(deb, name_of_backup, temp_directory)
+	crash(files_in_site)
+	extract(deb, name_of_backup, temp_directory)
+	restauration(files_to_restore, site_directory, temp_directory)
+	sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
+
+
+backup()
+#restore()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
