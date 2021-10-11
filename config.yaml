@@ -27,3 +27,6 @@ constantes :
   DB_USER : root
   DB_USER_PASSWORD : debian
   DB_NAME : wordpress
+  
+  # Choix du truc à faire.
+  status : backup

@@ -15,6 +15,7 @@ import shutil
 import tarfile
 # yaml nécessite d'installer "pip" puis de faire "sudo pip install PyYAML"
 import yaml
+import sys
 # subprocess execute une ligne de commande comme dans un terminal.
 import subprocess
 
@@ -27,35 +28,19 @@ import subprocess
 
 
 ### LECTURE DU FICHIER YAML ###
-try:
+#try:
 	# Récupération du contenu du yaml.
-	with open("config.yaml", 'r') as stream:
-		vars = yaml.safe_load(stream)
-except:
-	exit("Pas de fichier du nom de config.yaml")
+#	with open("config.yaml", 'r') as stream:
+#		vars = yaml.safe_load(stream)
+#except:
+#	exit("Pas de fichier du nom de config.yaml")
 
-
-# Les constantes.
-# Constante du chemin de home.
-deb = vars['constantes']['deb']
-# Nom de la backup.
-name_of_backup = vars['constantes']['name_of_backup']
-# Constante du chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
-temp_directory = deb + name_of_backup + '/'
-# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
-files_in_site = vars['constantes']['files_in_site']
-# Tableau qui contient les fichiers à remettre en place.
-files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
-
-# Les constantes MySQL.
-DB_HOST = vars['constantes']['DB_HOST']
-DB_USER = vars['constantes']['DB_USER']
-DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
-DB_NAME = vars['constantes']['DB_NAME']
-BACKUP_PATH = deb + name_of_backup + '/'
-
-# Constante du chemin du dossier du site.
-site_directory = vars['constantes']['site_directory']
+def readConf(file):
+	try:
+		with open(file, 'r') as Stream:
+			return yaml.safe_load(Stream)
+	except:
+		exit(1)
 
 
 
@@ -263,7 +248,6 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		exit("Problème avec le bloque MySQLdump. Le script continue quand même.")
 
-
 	shutil.rmtree(temp_directory)
 	print("")
 	print("Fin de la restauration.")
@@ -291,9 +275,36 @@ def restore():
 	restauration(files_to_restore, site_directory, temp_directory)
 	sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
 
+vars = readConf(sys.argv[1])
 
-backup()
-#restore()
+# Les constantes.
+# Constante du chemin de home.
+deb = vars['constantes']['deb']
+# Nom de la backup.
+name_of_backup = vars['constantes']['name_of_backup']
+# Constante du chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
+temp_directory = deb + name_of_backup + '/'
+# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
+files_in_site = vars['constantes']['files_in_site']
+# Tableau qui contient les fichiers à remettre en place.
+files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
+
+# Les constantes MySQL.
+DB_HOST = vars['constantes']['DB_HOST']
+DB_USER = vars['constantes']['DB_USER']
+DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
+DB_NAME = vars['constantes']['DB_NAME']
+BACKUP_PATH = deb + name_of_backup + '/'
+
+# Constante du chemin du dossier du site.
+site_directory = vars['constantes']['site_directory']
+
+
+
+if (vars['constantes']['status'] == 'restore'):
+	restore()
+else:
+	backup()
 
 
 
