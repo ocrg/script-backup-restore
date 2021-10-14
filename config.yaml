@@ -7,7 +7,7 @@
 
 language : python
 version : 3.9.2
-os : Debian-11
+os_vm : Debian-11
 
 constantes :
   # Constante du chemin de home.
@@ -29,5 +29,6 @@ constantes :
   DB_USER_PASSWORD : debian
   DB_NAME : wordpress
   
-  # Choix du truc à faire.
+  # backup veut dire qu'une backup sera effectuée.
+  # restore veut dire qu'une restauration sera effectuée.
   status : backup

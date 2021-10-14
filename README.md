@@ -52,3 +52,4 @@ La dernière est particulière, il faut écrire "backup" si on veut qu'une backu
 
 ### ### ###	### ### ###	### ### ###
 
+Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisés en sous-parties.
