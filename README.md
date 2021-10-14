@@ -5,18 +5,12 @@ Projet 6
 
 		OBJECTIF DU SCRIPT
 
-
-
 Ce script permet de faire un backup au format .taz.bz2 des fichiers contenus dans le tableau, ainsi que de la base de donnée MySQL.
 Il permet aussi de faire une restauration à partir de l'un de ces backups.
 
 
 
-### ### ###	### ### ###	### ### ###
-
 		UTILISATION
-
-### ### ###	### ### ###	### ### ###
 
 Pour faire fonctionner le script, il faut utiliser le terminal et entrer la commande suivante :
 
@@ -29,11 +23,7 @@ Le fichier svg.py est le script qui effectue l'opération voulue, avec les varia
 
 
 
-### ### ###	### ### ###	### ### ###
-
 		config.yaml
-
-### ### ###	### ### ###	### ### ###
 
 Le fichier de configuration est divisé en 3 petites parties.
 
@@ -46,10 +36,6 @@ La dernière est particulière, il faut écrire "backup" si on veut qu'une backu
 
 
 
-### ### ###	### ### ###	### ### ###
-
 		svg.py
-
-### ### ###	### ### ###	### ### ###
 
 Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisés en sous-parties.
