@@ -39,3 +39,8 @@ La dernière est particulière, il faut écrire "backup" si on veut qu'une backu
 		svg.py
 
 Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisés en sous-parties.
+Pour schématiser, voici l'arborescence :
+- backup
+- restore
+- variables et constantes
+- conditions de lancement
