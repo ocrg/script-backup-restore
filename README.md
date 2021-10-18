@@ -1,6 +1,6 @@
 # Projet 6
 _code open source et libre_
-https://img.shields.io/badge/<LICENSE>-<CC0>-<GREEN>
+[shields.io](https://img.shields.io/badge/<LICENSE>-<CC0>-<GREEN>)
 
 [![forthebadge](https://forthebadge.com/images/badges/cc-0.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 
