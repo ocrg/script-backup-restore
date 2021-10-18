@@ -1,9 +1,6 @@
-# ocr.tp
-Projet 6
+# Projet 6
 
-
-
-		OBJECTIF DU SCRIPT
+/badge/<LICENSE>-<C0>-<GREEN>
 
 Ce script permet de faire un backup au format .taz.bz2 des fichiers contenus dans le tableau, ainsi que de la base de donnée MySQL.
 Ce script permet aussi de faire une restauration à partir de l'un de ces backups.
