@@ -1,9 +1,7 @@
 # Projet 6
-_code open source et libre_
 ![license](https://img.shields.io/badge/license-CC0-green)
 
-![cc0](https://forthebadge.com/images/badges/cc-0.svg)(https://forthebadge.com)
-![python](https://forthebadge.com/images/badges/made-with-python.svg)(https://forthebadge.com)
+![cc0](https://forthebadge.com/images/badges/cc-0.svg)![python](https://forthebadge.com/images/badges/made-with-python.svg)
 
 Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL. Autrement dit, il permet de repartir à zéro. Il permet également de faire une restauration à partir de l'un des backups effectué.
 
