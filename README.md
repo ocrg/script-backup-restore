@@ -1,10 +1,10 @@
 # Projet 6
 _code open source et libre_
-/badge/<LICENSE>-<CC0>-<GREEN>
+https://img.shields.io/badge/<LICENSE>-<CC0>-<GREEN>
 
 [![forthebadge](https://forthebadge.com/images/badges/cc-0.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 
-Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL. Il permet également de faire une restauration à partir de l'un des backups effectué.
+Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL. Autrement dit, il permet de repartir à zéro. Il permet également de faire une restauration à partir de l'un des backups effectué.
 
 
 ## Pour commencer
@@ -16,27 +16,27 @@ Le script fonctionne dans le contexte ci-dessous.
 Sur une VM Debian 11 créée avec VirtualBox 6.1, le site est installé avec les programmes suivants :
 
 - Apache2
-- PHP 7.4
-- mysql 8.0
+- PHP 7
+- mysql 8
 - WordPress [télécharger](https://fr.wordpress.org/download/) sur le site
-- python 3
+- Python 3
 
-Une fois le site fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
+Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
 
 ### Quelques détails
 
-M'y connaissant peu en SQL et encore moins en PHP, j'ai utilisé des tutoriels pour installer tout ceci. En voici quelques-uns :
-- [netpunet.fr](https://fr.wordpress.org/download/), surtout MySQL
-- [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2
-- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), il y a un peu tout
+Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
+- [netpunet.fr](https://fr.wordpress.org/download/), surtout MySQL,
+- [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2,
+- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress mais pas que.
 
-Du reste sur OpenClassrooms il y a les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
+Du reste sur [OpenClassrooms](https://openclassrooms.com/fr/) il y a les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
 
 ## Présentation du script
 
 Le fichier svg.py est le script qui effectue l'opération voulue, avec les variables contenus dans fichier config.yaml.
 
-Le fichier config.yaml est le fichier de configuration. Il contient notamment les variables, et l'opération à effectuée (voir plus bas).
+Le fichier config.yaml est le fichier de configuration. Il contient notamment les variables, et l'opération à effectuer (voir plus bas) : un backup ou une restauration.
 
 En somme, si le script est le moteur, son fichier de configuration est le conducteur.
 
@@ -53,7 +53,7 @@ La dernière est particulière, il faut écrire ``backup`` si on veut qu'une bac
 
 ### svg.py
 
-Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisés en sous-parties.
+Le meilleur moyen pour comprendre le fonctionnement du script est d'aller le regarder et d'y lire les commentaires. Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisées en sous-parties.
 
 Voici l'arborescence :
 - les imports
@@ -78,6 +78,7 @@ Voici l'arborescence :
 Une fois la configuration ajustée, on peut lancer le script. Ce dernier quant à lui n'a logiquement pas besoin d'être modifié.
 
 Il faut ouvrir le terminal et écrire cette ligne de commande :
+
 ``python3 svg.py config.yaml``
 
 ## Outils utilisés :
@@ -89,3 +90,6 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 
 Version actuelle stable : 1.0
 Écrite à la fin de l'été 2021.
+Dernière mise à jour : voir les commits !
+
+Des mises à jour très mineures peuvent avoir lieu mais rien de significatif.
