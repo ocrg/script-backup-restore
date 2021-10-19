@@ -10,12 +10,12 @@ Le script fonctionne dans le contexte ci-dessous.
 
 ### Contexte
 
-Sur une VM Debian 11 créée avec VirtualBox 6.1, le site est installé avec les programmes suivants :
+Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le site est installé avec les programmes suivants :
 
 - Apache2
 - PHP 7
 - mysql 8
-- WordPress [télécharger](https://fr.wordpress.org/download/) sur le site
+- WordPress [téléchargé](https://fr.wordpress.org/download/) sur le site
 - Python 3
 
 Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
@@ -27,7 +27,7 @@ Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
 - [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2,
 - [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress mais pas que.
 
-Du reste sur [OpenClassrooms](https://openclassrooms.com/fr/) il y a les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
+Du reste il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
 
 ## Présentation du script
 
@@ -81,12 +81,15 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 ## Outils utilisés :
 
 **gedit 3.38.1** avec des greffons déjà présents.
+
 **Debian 11** avec Gnome en environnement de bureau.
 
 ## Version
 
 Version actuelle stable : 1.0
+
 Écrite à la fin de l'été 2021.
+
 Dernière mise à jour : voir les commits.
 
 Des mises à jour très mineures peuvent avoir lieu mais rien de significatif.
