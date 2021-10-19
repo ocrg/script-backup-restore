@@ -86,8 +86,8 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 
 ## Version
 
-Version actuelle stable : 1.0 
-Écrite à la fin de l'été 2021. 
+Version actuelle stable : 1.0
+Écrite à la fin de l'été 2021.  
 Dernière mise à jour : voir les commits. 
 
 Des mises à jour très mineures peuvent avoir lieu mais rien de significatif.
