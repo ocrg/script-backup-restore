@@ -88,4 +88,5 @@ Version actuelle stable : 1.0
 Écrite à la fin de l'été 2021.  
 Dernière mise à jour : voir les commits.  
 
-Des mises à jour très mineures peuvent avoir lieu mais rien de significatif.
+Des mises à jour très mineures peuvent avoir lieu, mais très ponctuellement.  
+Ce repository est utilisé à des fins personnelles dans le cadre d'une formation.
