@@ -1,5 +1,5 @@
 # Projet 6
-![license](https://img.shields.io/badge/license-CC0-green) _ce code totalement libre._
+![license](https://img.shields.io/badge/license-CC0-green)
 
 Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL.  
 Il permet également de faire une restauration à partir de l'un des backups effectué. Autrement dit, il permet de repartir à zéro.
@@ -19,8 +19,6 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 - WordPress [téléchargé](https://fr.wordpress.org/download/) sur le site
 - Python 3
 
-Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
-
 ### Quelques détails
 
 Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
@@ -28,7 +26,8 @@ Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
 - [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2,
 - [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress mais pas que.
 
-Du reste il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
+Du reste il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.  
+Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
 
 ## Présentation du script
 
