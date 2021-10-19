@@ -1,7 +1,8 @@
 # Projet 6
 ![license](https://img.shields.io/badge/license-CC0-green) _ce code totalement libre._
 
-Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL. Autrement dit, il permet de repartir à zéro. Il permet également de faire une restauration à partir de l'un des backups effectué.
+Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL.  
+Il permet également de faire une restauration à partir de l'un des backups effectué. Autrement dit, il permet de repartir à zéro.
 
 
 ## Pour commencer
@@ -74,20 +75,18 @@ Voici l'arborescence :
 
 Une fois la configuration ajustée, on peut lancer le script. Ce dernier quant à lui n'a logiquement pas besoin d'être modifié.
 
-Il faut ouvrir le terminal et écrire cette ligne de commande :
-
+Il faut ouvrir le terminal et écrire cette ligne de commande :  
 ``python3 svg.py config.yaml``
 
 ## Outils utilisés :
 
-**gedit 3.38.1** avec des greffons déjà présents.
-
+**gedit 3.38.1** avec des greffons déjà présents.  
 **Debian 11** avec Gnome en environnement de bureau.
 
 ## Version
 
-Version actuelle stable : 1.0
+Version actuelle stable : 1.0  
 Écrite à la fin de l'été 2021.  
-Dernière mise à jour : voir les commits. 
+Dernière mise à jour : voir les commits.  
 
 Des mises à jour très mineures peuvent avoir lieu mais rien de significatif.
