@@ -77,6 +77,25 @@ Une fois la configuration ajustée, on peut lancer le script. Ce dernier quant �
 Il faut ouvrir le terminal et écrire cette ligne de commande :  
 ``python3 svg.py config.yaml``
 
+### Codes retour
+
+On peut avoir plusieurs code retour :
+- Partie backup :
+  - 1 : une archive .tar.bz2 existe déjà.
+  - 2 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
+  - 3 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
+  - 4 : problème lors de la compression. La copie des fichiers et la sauvegarde de la BDD MySQL ont été réalisés, le dossier temporaire n'a pas été supprimé.
+  - 5 : le dossier temporaire n'a pas été supprimé après la compression, mais l'archive est faite.
+- Partie restauration :
+  - 6 : l'archive à restaurer n'est pas présente.
+  - 7 : la simulation d'un crash (suppression des fichiers) n'a pas réussi, dossier temporaire supprimé.
+  - 8 : décompression en échec, dossier temporaire supprimé.
+  - 9 : erreur pendant la restauration des fichiers, le dossier temporaire n'a pas été supprimé.
+  - 10 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
+  - 11 : erreur lors de la lecture du fichier de configuration yaml.
+  - 12 : problème lors du remplissage des constantes
+
+
 ## Outils utilisés :
 
 **gedit 3.38.1** avec des greffons déjà présents.  

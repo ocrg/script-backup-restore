@@ -236,13 +236,13 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		subprocess.run(dumpcmd, shell=True)
 		# Un print pour voir ce qui est clairement saisie.
 		print("OK.")
+		
+		shutil.rmtree(temp_directory)
+		print("")
+		print("Restauration OK.")
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		exit(10)
-
-	shutil.rmtree(temp_directory)
-	print("")
-	print("Restauration OK.")
 
 
 
@@ -299,7 +299,7 @@ try:
 	# BACKUP_PATH original :
 	# BACKUP_PATH = deb + name_of_backup + '/'
 except:
-	print("Problème dans les constantes, fichier yaml à vérifier.")
+	print("Une ou plusieurs constante(s) invalide(s), fichier yaml à vérifier.")
 	exit(12)
 
 
