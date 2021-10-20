@@ -81,8 +81,8 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 
 On peut avoir plusieurs code retour :
 - Partie backup :
-  - 1 : une archive .tar.bz2 existe déjà.
-  - 2 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
+  - <span style="color:red">1</span> : une archive .tar.bz2 existe déjà.
+  - <span style="color:red">2</span> : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
   - 3 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
   - 4 : problème lors de la compression. La copie des fichiers et la sauvegarde de la BDD MySQL ont été réalisés, le dossier temporaire n'a pas été supprimé.
   - 5 : le dossier temporaire n'a pas été supprimé après la compression, mais l'archive est faite.
