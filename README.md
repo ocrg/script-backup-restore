@@ -79,21 +79,25 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 
 ### Codes retour
 
-On peut avoir plusieurs code retour :
+En cas de bug, pour en connaître l'origine dans le script, il faut taper la commande suivante :
+``echo $?``
+
+Voici la liste des différents code retour :
 - Partie backup :
-  - 1 : une archive .tar.bz2 existe déjà.
+  - 1 : une archive .tar.bz2 du même nom existe déjà, le dossier temporaire n'a pas été créé.
   - 2 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
   - 3 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
   - 4 : problème lors de la compression. La copie des fichiers et la sauvegarde de la BDD MySQL ont été réalisés, le dossier temporaire n'a pas été supprimé.
   - 5 : le dossier temporaire n'a pas été supprimé après la compression, mais l'archive est faite.
 - Partie restauration :
   - 6 : l'archive à restaurer n'est pas présente.
-  - 7 : la simulation d'un crash (suppression des fichiers) n'a pas réussi, dossier temporaire supprimé.
-  - 8 : décompression en échec, dossier temporaire supprimé.
+  - 7 : la simulation d'un crash (suppression des fichiers à restaurer) n'a pas réussi, mais certains fichiers ou dossiers ont peut-être été supprimés. Dossier temporaire supprimé.
+  - 8 : décompression en échec, dossier temporaire supprimé. Attention : le format de l'archive est en **bz2**, ce qui n'est pas le plus conventionnel.
   - 9 : erreur pendant la restauration des fichiers, le dossier temporaire n'a pas été supprimé.
   - 10 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
-  - 11 : erreur lors de la lecture du fichier de configuration yaml.
-  - 12 : problème lors du remplissage des constantes
+  - 11 : le dossier temporaire n'a pas été supprimé après l'ensemble de la restauration.
+  - 12 : erreur lors de la lecture du fichier de configuration yaml. Il est peut-être absent de la ligne de commande.
+  - 13 : problème lors du remplissage des constantes. Une ou plusieurs constante(s) invalide(s), fichier yaml à vérifier.
 
 
 ## Outils utilisés :

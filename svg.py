@@ -52,6 +52,7 @@ def create_tmp_save(deb, name_of_backup, temp_directory):
 	# S'il y a déjà une archive du même nom, exit. Sinon, on continue.
 	if os.path.exists(deb + name_of_backup + '.tar.bz2') == True:
 		print("L'archive " + name_of_backup + ".tar.bz2 semble déjà exister.")
+		print("Erreur !")
 		exit(1)
 	# Si le chemin /home/debian/temp_directory n'existe pas, on créer le dossier temporaire.
 	if not os.path.exists(temp_directory):
@@ -63,13 +64,11 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		# La ligne de code qui sera exécutée par subprocess.
-		
-		# En commantaire le truc d'origine.
 		dumpcmd = "mysqldump --add-drop-table -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
 	except:
 		shutil.rmtree(temp_directory)
-		print("Problème avec mysqldump lors du backup.")
+		print("Erreur !")
 		exit(2)
 
 
@@ -105,7 +104,7 @@ def copy(files_in_site, temp_directory):
 		print("")
 	except:
 		shutil.rmtree(temp_directory)
-		print("Problème de copie des fichiers lors du backup.")
+		print("Erreur !")
 		exit(3)
 
 
@@ -113,14 +112,14 @@ def copy(files_in_site, temp_directory):
 def compress_clean(deb, temp_directory, name_of_backup):
 	try:
 		#	COMPRESSION
-		# Compression. Instruction pour le tar.bz2.
+		# Instruction pour le tar.bz2.
 		print("Compression...")
 		with tarfile.open(deb + name_of_backup + '.tar.bz2', "w:bz2") as tar:
 			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("OK.")
 		print("")
 	except:
-		print("Problème de compression lors du backup.")
+		print("Erreur !")
 		exit(4)
 
 
@@ -130,7 +129,7 @@ def compress_clean(deb, temp_directory, name_of_backup):
 		shutil.rmtree(temp_directory)
 		print("Backup OK !")
 	except:
-		print("Problème de suppression du dossier temporaire lors du backup. Le fichier compressé est peut-être affecté.")
+		print("Erreur !")
 		exit(5)
 
 
@@ -149,6 +148,7 @@ def create_tmp_restore(deb, name_of_backup, temp_directory):
 	# Y a-t-il déjà une archive du même nom ? Si non, exit. Si oui, on continue.
 	if not os.path.exists(deb + name_of_backup + '.tar.bz2'):
 		print("L'archive " + name_of_backup + ".tar.bz2 ne semble pas exister.")
+		print("Erreur !")
 		exit(6)
 	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
 	if not os.path.exists(temp_directory):
@@ -181,6 +181,7 @@ def crash(files_in_site):
 		print("")
 	except:
 		shutil.rmtree(temp_directory)
+		print("Erreur !")
 		exit(7)
 
 
@@ -196,6 +197,7 @@ def extract(deb, name_of_backup, temp_directory):
 		print("")
 	except:
 		shutil.rmtree(temp_directory)
+		print("Erreur !")
 		exit(8)
 
 
@@ -223,6 +225,7 @@ def restauration(files_to_restore, site_directory, temp_directory):
 		print("OK.")
 		print("")
 	except:
+		print("Erreur !")
 		exit(9)
 
 
@@ -236,13 +239,20 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		subprocess.run(dumpcmd, shell=True)
 		# Un print pour voir ce qui est clairement saisie.
 		print("OK.")
-		
-		shutil.rmtree(temp_directory)
 		print("")
-		print("Restauration OK.")
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
+		print("Erreur !")
 		exit(10)
+
+	try:
+		#	SUPPRESSION DOSSIER TEMPORAIRE
+		# Suppression du dossier temporaire.
+		shutil.rmtree(temp_directory)
+		print("Restauration OK !")
+	except:
+		print("Erreur !")
+		exit(11)
 
 
 
@@ -272,8 +282,8 @@ def restore():
 try:
 	vars = readConf(sys.argv[1])
 except:
-	print("La fonction readConf ne retourne pas les données, problème avec le fichier yaml.")
-	exit(11)
+	print("Erreur !")
+	exit(12)
 
 
 try:
@@ -299,8 +309,8 @@ try:
 	# BACKUP_PATH original :
 	# BACKUP_PATH = deb + name_of_backup + '/'
 except:
-	print("Une ou plusieurs constante(s) invalide(s), fichier yaml à vérifier.")
-	exit(12)
+	print("Erreur.")
+	exit(13)
 
 
 if (vars['constantes']['status'] == 'restore'):
