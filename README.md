@@ -79,7 +79,7 @@ Il faut ouvrir le terminal et écrire cette ligne de commande :
 
 ### Codes retour
 
-En cas de bug, pour en connaître l'origine dans le script, il faut taper la commande suivante :
+En cas de bug, pour en connaître l'origine dans le script, il faut taper la commande suivante :  
 ``echo $?``
 
 Voici la liste des différents code retour :
