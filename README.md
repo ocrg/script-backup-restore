@@ -53,22 +53,23 @@ La dernière est particulière, il faut écrire ``backup`` si on veut qu'une bac
 Le meilleur moyen pour comprendre le fonctionnement du script est d'aller le regarder et d'y lire les commentaires. Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisées en sous-parties.
 
 Voici l'arborescence :
-- les imports
-- fonction de lecture du fichier .yaml
-- partie backup
-  - fonction de création d'un dossier temporaire
-  - fonction de sauvegarde de la base de données dans le dossier temporaire
-  - fonction de copie des fichiers à sauvegarder dans le dossier temporaire
-  - fonction de compression du dossier temporaire, et qui supprime ensuite ce dossier
-- partie restauration
-  - fonction de création d'un dossier temporaire
-  - fonction qui supprime les fichiers à restaurer (simulation d'un crash)
-  - fonction de décompression, tout est placé dans le dossier temporaire
-  - fonction de restauration des fichiers et dossiers, les éléments sont copier du dossier temporaire au répertoire du site
-  - fonction de restauration de la base de donnée MySQL, et qui supprime le dossier temporaire
-- fonction backup (cette fonction lance les fonctions écrites dans la partie backup)
-- fonction restauration (cette fonction lance les fonctions écrites dans la partie restauration)
-- morceau de code qui remplie les constantes (il utilise vars et la fonction de lecture du fichier .yaml pour remplir lesdites constantes)
+- les imports ;
+- fonction de lecture du fichier .yaml ;
+- partie backup :
+  - fonction de création d'un dossier temporaire ;
+  - fonction de sauvegarde de la base de données dans le dossier temporaire ;
+  - fonction de copie des fichiers à sauvegarder dans le dossier temporaire ;
+  - fonction de compression du dossier temporaire, et qui supprime ensuite ce dossier ;
+- partie restauration :
+  - fonction de création d'un dossier temporaire ;
+  - fonction qui supprime les fichiers à restaurer (simulation d'un crash) ;
+  - fonction de décompression, tout est placé dans le dossier temporaire ;
+  - fonction de restauration des fichiers et dossiers, les éléments sont copier du dossier temporaire au répertoire du site ;
+  - fonction de restauration de la base de donnée MySQL, et qui supprime le dossier temporaire ;
+- fonction backup (cette fonction lance les fonctions écrites dans la partie backup) ;
+- fonction restauration (cette fonction lance les fonctions écrites dans la partie restauration) ;
+- morceau de code qui remplie les constantes (il utilise vars et la fonction de lecture du fichier .yaml pour remplir lesdites constantes) ;
+- lanceur du script.
 
 ## Utilisation
 
