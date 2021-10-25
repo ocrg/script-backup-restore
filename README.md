@@ -45,7 +45,7 @@ En somme, si le script est le moteur, son fichier de configuration est le conduc
 
 Le fichier de configuration, est divisé en 3 petites parties.
 
-La première partie du fichier, le bloque de commentaires, sont des indications propres au format YAML.
+La première partie du fichier, le shebang et le bloc de commentaires, sont des indications propres au format YAML.
 
 La seconde partie sont des précisions sur le langage du script, et surtout la version de python utilisée ainsi que l'OS et sa version.
 
@@ -58,7 +58,8 @@ La dernière est particulière, il faut écrire ``backup`` si on veut qu'une bac
 Le meilleur moyen pour comprendre le fonctionnement du script est d'aller le regarder et d'y lire les commentaires. Le script est divisé en plusieurs grandes parties qui sont elles mêmes divisées en sous-parties.
 
 Voici l'arborescence :
-- les imports ;
+- le shebang ;
+- les import ;
 - fonction de lecture du fichier .yaml ;
 - partie backup :
   - fonction de création d'un dossier temporaire ;
@@ -92,7 +93,7 @@ En cas de bug, pour en connaître l'origine dans le script, il faut taper la com
 
 Voici la liste des différents code retour :
 - Partie backup :
-  - 1 : échec de la lecture du fichier .yaml. Il n'a pas les bons droits, son nom dans la ligne de commande est incorrect, une constante (ou une variable) y est absente ou mal écrite, ou autre.  L'erreur 14 se produit lorsque la lecture a réussie mais que le contenue est invalide. dans les 2 cas, le problème vient du fichier .yaml.
+  - 1 : échec de la lecture du fichier .yaml. Il n'a pas les bons droits, son nom dans la ligne de commande est incorrect, une constante (ou une variable) y est absente ou mal écrite, ou autre. L'erreur 14 ressemble à l'erreur 1, cependant, l'erreur 14 se produit lorsque la lecture du fichier .yaml a réussie mais que le contenu en est invalide. Dans les 2 cas, le problème vient du fichier .yaml.
   - 2 : une archive .tar.bz2 du même nom existe déjà, le dossier temporaire n'a pas été créé.
   - 3 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
   - 4 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
@@ -106,7 +107,7 @@ Voici la liste des différents code retour :
   - 11 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
   - 12 : le dossier temporaire n'a pas été supprimé après la restauration. La restauration des fichiers et de la BDD à tout de même été faite.
   - 13 : erreur lors de la lecture du fichier suivant le script python *dans la ligne de commande*. La ligne de commande ne contient probablement pas le fichier .yaml.
-  - 14 : problème de remplissage des variables lues dans le fichier .yaml. Ce dernier à cependant été lu, mais il contient une erreur. Voir le code retour 1.  
+  - 14 : problème de remplissage des variables lues dans le fichier .yaml. Ce dernier a cependant été lu, mais il contient une erreur. Voir le code retour 1.  
 
 
 ## F.A.Q.

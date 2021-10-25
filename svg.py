@@ -1,5 +1,5 @@
 #!/usr/bin/python3.9
-# Projet 6 et 9, sauvegarde wordpress.
+# Projet 6, sauvegarde et restauration de la configuration d'un site WordPress.
 
 
 
@@ -9,12 +9,16 @@
 
 
 
-# Les imports.
+# Les import.
+# Récupérer les chemins
 import os
+# Copier/coller
 import shutil
+# Compression et décompression
 import tarfile
 # Permet de lire les .yaml
 import yaml
+# Permet de lire directement la ligne de commande
 import sys
 # subprocess exécute une ligne de commande comme dans un terminal
 import subprocess
