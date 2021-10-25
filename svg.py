@@ -1,7 +1,7 @@
 #!/usr/bin/python3.9
-# -*-coding:utf-8 -*
-
 # Projet 6 et 9, sauvegarde wordpress.
+
+
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -13,10 +13,10 @@
 import os
 import shutil
 import tarfile
-# yaml nécessite d'installer "pip" puis de faire "sudo pip install PyYAML"
+# Permet de lire les .yaml
 import yaml
 import sys
-# subprocess exécute une ligne de commande comme dans un terminal.
+# subprocess exécute une ligne de commande comme dans un terminal
 import subprocess
 
 
@@ -34,7 +34,7 @@ def readConf(file):
 			return yaml.safe_load(Stream)
 	except:
 		print("Problème de lecture du fichier .yaml.")
-		exit(0)
+		exit(1)
 
 
 
@@ -45,7 +45,7 @@ def readConf(file):
 
 
 
-### VÉRIFICATION ET DOSSIER TEMPORAIRE ###
+### VÉRIFICATION ET CRÉATION DOSSIER TEMPORAIRE ###
 def create_tmp_save(deb, name_of_backup, temp_directory):
 
 	#	CONTRÔLE
@@ -53,7 +53,7 @@ def create_tmp_save(deb, name_of_backup, temp_directory):
 	if os.path.exists(deb + name_of_backup + '.tar.bz2') == True:
 		print("L'archive " + name_of_backup + ".tar.bz2 semble déjà exister.")
 		print("Erreur !")
-		exit(1)
+		exit(2)
 	# Si le chemin /home/debian/temp_directory n'existe pas, on créer le dossier temporaire.
 	if not os.path.exists(temp_directory):
 		os.mkdir(temp_directory)
@@ -69,7 +69,7 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	except:
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
-		exit(2)
+		exit(3)
 
 
 ### COPIE DES FICHIERS ###
@@ -80,7 +80,7 @@ def copy(files_in_site, temp_directory):
 		print("")
 		print("Copie des fichiers...")
 		for file_or_dir in files_in_site:
-			# On contrôle si c'est un dossier ou un fichier.
+		file	# On contrôle si c'est un dossier ou un fichier.
 			# Un dossier = shutil.copytree(src, dst) ; un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination ET le nom du dossier ou fichier à copier. D'où l'utilisation d'os.path.basename.
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
@@ -105,7 +105,7 @@ def copy(files_in_site, temp_directory):
 	except:
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
-		exit(3)
+		exit(4)
 
 
 ### CRÉATION DU TAR.BZ2 ET NETTOYAGE DU DOSSIER TEMPORAIRE ###
@@ -113,14 +113,14 @@ def compress_clean(deb, temp_directory, name_of_backup):
 	try:
 		#	COMPRESSION
 		# Instruction pour le tar.bz2.
-		print("Compression...")
+		print("Compression...")Créez une machine virtuelle sous Linux et installez un site sous WordPress. Cette machine fera office de serveur de Production.
 		with tarfile.open(deb + name_of_backup + '.tar.bz2', "w:bz2") as tar:
 			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("OK.")
 		print("")
 	except:
 		print("Erreur !")
-		exit(4)
+		exit(5)
 
 
 	try:
@@ -130,7 +130,7 @@ def compress_clean(deb, temp_directory, name_of_backup):
 		print("Backup OK !")
 	except:
 		print("Erreur !")
-		exit(5)
+		exit(6)
 
 
 
@@ -149,7 +149,7 @@ def create_tmp_restore(deb, name_of_backup, temp_directory):
 	if not os.path.exists(deb + name_of_backup + '.tar.bz2'):
 		print("L'archive " + name_of_backup + ".tar.bz2 ne semble pas exister.")
 		print("Erreur !")
-		exit(6)
+		exit(7)
 	# Au besoin, on créer le dossier temporaire, s'il est déjà là on ne fait rien.
 	if not os.path.exists(temp_directory):
 		os.mkdir(temp_directory)
@@ -182,7 +182,7 @@ def crash(files_in_site):
 	except:
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
-		exit(7)
+		exit(8)
 
 
 ### EXTRATION ###
@@ -198,7 +198,7 @@ def extract(deb, name_of_backup, temp_directory):
 	except:
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
-		exit(8)
+		exit(9)
 
 
 ### RESTAURATION ###
@@ -226,7 +226,7 @@ def restauration(files_to_restore, site_directory, temp_directory):
 		print("")
 	except:
 		print("Erreur !")
-		exit(9)
+		exit(10)
 
 
 ### SQL_DUMP ###
@@ -243,7 +243,7 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	except:
 		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
 		print("Erreur !")
-		exit(10)
+		exit(11)
 
 	try:
 		#	SUPPRESSION DOSSIER TEMPORAIRE
@@ -252,7 +252,7 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		print("Restauration OK !")
 	except:
 		print("Erreur !")
-		exit(11)
+		exit(12)
 
 
 
@@ -279,40 +279,36 @@ def restore():
 	sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
 
 
-try:
+# Premier point de départ du script. vars contiendra les constantes qui sont dans le fichier .yaml. 
+if:
 	vars = readConf(sys.argv[1])
-except:
-	print("Erreur !")
-	exit(12)
-
-
-try:
-	# Les constantes.
-	# Chemin de home.
-	deb = vars['constantes']['deb']
-	# Nom de la backup.
-	name_of_backup = vars['constantes']['name_of_backup']
-	# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
-	temp_directory = deb + name_of_backup + '/'
-	# Chemin du dossier du site.
-	site_directory = vars['constantes']['site_directory']
-	# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
-	files_in_site = vars['constantes']['files_in_site']
-	# Tableau qui contient les fichiers à remettre en place.
-	files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
-	# Les constantes MySQL.
-	DB_HOST = vars['constantes']['DB_HOST']
-	DB_USER = vars['constantes']['DB_USER']
-	DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
-	DB_NAME = vars['constantes']['DB_NAME']
-	BACKUP_PATH = temp_directory
-	# BACKUP_PATH original :
-	# BACKUP_PATH = deb + name_of_backup + '/'
-except:
-	print("Erreur.")
+else:
+	print(Erreur !)
 	exit(13)
 
 
+# Les constantes.
+# Chemin de home.
+deb = vars['constantes']['deb']
+# Nom de la backup.
+name_of_backup = vars['constantes']['name_of_backup']
+# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
+temp_directory = deb + name_of_backup + '/'
+# Chemin du dossier du site.
+site_directory = vars ['constantes']['site_directory']
+# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
+files_in_site = vars['constantes']['files_in_site']
+# Tableau qui contient les fichiers à remettre en place.
+files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
+# Les constantes MySQL.
+DB_HOST = vars['constantes']['DB_HOST']
+DB_USER = vars['constantes']['DB_USER']
+DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
+DB_NAME = vars['constantes']['DB_NAME']
+BACKUP_PATH = temp_directory
+
+
+# Second point de départ du script. Tout commence par la variable "status".
 if (vars['constantes']['status'] == 'restore'):
 	restore()
 else:

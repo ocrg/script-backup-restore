@@ -85,20 +85,20 @@ En cas de bug, pour en connaître l'origine dans le script, il faut taper la com
 
 Voici la liste des différents code retour :
 - Partie backup :
-  - 1 : une archive .tar.bz2 du même nom existe déjà, le dossier temporaire n'a pas été créé.
-  - 2 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
-  - 3 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
-  - 4 : problème lors de la compression. La copie des fichiers et la sauvegarde de la BDD MySQL ont été réalisés, le dossier temporaire n'a pas été supprimé.
-  - 5 : le dossier temporaire n'a pas été supprimé après la compression, mais l'archive est faite.
+  - 1 : le fichier n'a pas les bons droits (sa lecture n'est pas autorisé par exemple), ou son contenu n'est pas correct.
+  - 2 : une archive .tar.bz2 du même nom existe déjà, le dossier temporaire n'a pas été créé.
+  - 3 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
+  - 4 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
+  - 5 : problème lors de la compression. La copie des fichiers et la sauvegarde de la BDD MySQL ont été réalisés et le dossier temporaire n'a pas été supprimé.
+  - 6 : le dossier temporaire n'a pas été supprimé après la compression, mais l'archive est faite.
 - Partie restauration :
-  - 6 : l'archive à restaurer n'est pas présente.
-  - 7 : la simulation d'un crash (suppression des fichiers à restaurer) n'a pas réussi, mais certains fichiers ou dossiers ont peut-être été supprimés. Dossier temporaire supprimé.
-  - 8 : décompression en échec, dossier temporaire supprimé. Attention : le format de l'archive est en **bz2**, ce qui n'est pas le plus conventionnel.
-  - 9 : erreur pendant la restauration des fichiers, le dossier temporaire n'a pas été supprimé.
-  - 10 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
-  - 11 : le dossier temporaire n'a pas été supprimé après l'ensemble de la restauration.
-  - 12 : erreur lors de la lecture du fichier de configuration yaml. Il est peut-être absent de la ligne de commande.
-  - 13 : problème lors du remplissage des constantes. Une ou plusieurs constante(s) invalide(s), fichier yaml à vérifier.
+  - 7 : l'archive à restaurer n'est pas présente.
+  - 8 : la simulation d'un crash (suppression des fichiers à restaurer) n'a pas réussi, mais certains fichiers ou dossiers ont peut-être été supprimés. Dossier temporaire supprimé.
+  - 9 : décompression en échec, dossier temporaire supprimé. Attention : le format de l'archive est en **bz2**, ce qui n'est pas le plus conventionnel.
+  - 10 : erreur pendant la restauration des fichiers, le dossier temporaire n'a pas été supprimé.
+  - 11 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
+  - 12 : le dossier temporaire n'a pas été supprimé après la restauration. La restauration des fichiers et de la BDD à tout de même été faite.
+  - 13 : erreur lors de la lecture du fichier suivant le script python dans la ligne de commande. La ligne de commande ne contient probablement pas le fichier .yaml.
 
 
 ## Outils utilisés :
