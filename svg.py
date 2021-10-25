@@ -283,7 +283,7 @@ def restore():
 if len(sys.argv) == 2:
 	vars = readConf(sys.argv[1])
 else:
-	print(Erreur !)
+	print("Erreur !")
 	exit(13)
 
 
