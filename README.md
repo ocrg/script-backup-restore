@@ -9,6 +9,7 @@ Il permet également de faire une restauration à partir de l'un des backups eff
 
 Le script fonctionne dans le contexte ci-dessous.
 
+
 ### Contexte
 
 Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le site est installé avec les programmes suivants :
@@ -18,6 +19,7 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 - mysql 8
 - WordPress [téléchargé](https://fr.wordpress.org/download/) sur le site
 - Python 3
+
 
 ### Quelques détails
 
@@ -29,6 +31,7 @@ Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
 Du reste il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.  
 Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
 
+
 ## Présentation du script
 
 Le fichier svg.py est le script qui effectue l'opération voulue, avec les variables contenus dans fichier config.yaml.
@@ -36,6 +39,7 @@ Le fichier svg.py est le script qui effectue l'opération voulue, avec les varia
 Le fichier config.yaml est le fichier de configuration. Il contient notamment les variables, et l'opération à effectuer (voir plus bas) : un backup ou une restauration.
 
 En somme, si le script est le moteur, son fichier de configuration est le conducteur.
+
 
 ### config.yaml
 
@@ -47,6 +51,7 @@ La seconde partie sont des précisions sur le langage du script, et surtout la v
 
 La troisième concerne les constantes utilisées dans le script.
 La dernière est particulière, il faut écrire ``backup`` si on veut qu'une backup soit effectuée, ou ``restore`` si on veut que ce soit une restauration. Par défaut, c'est une backup qui est effectuée.
+
 
 ### svg.py
 
@@ -71,12 +76,14 @@ Voici l'arborescence :
 - morceau de code qui remplie les constantes (il utilise vars et la fonction de lecture du fichier .yaml pour remplir lesdites constantes) ;
 - lanceur du script.
 
+
 ## Utilisation
 
 Une fois la configuration ajustée, on peut lancer le script. Ce dernier quant à lui n'a logiquement pas besoin d'être modifié.
 
 Il faut ouvrir le terminal et écrire cette ligne de commande :  
 ``python3 svg.py config.yaml``
+
 
 ### Codes retour
 
@@ -85,7 +92,7 @@ En cas de bug, pour en connaître l'origine dans le script, il faut taper la com
 
 Voici la liste des différents code retour :
 - Partie backup :
-  - 1 : le fichier n'a pas les bons droits (sa lecture n'est pas autorisé par exemple), ou son contenu n'est pas correct.
+  - 1 : échec de la lecture du fichier .yaml. Il n'a pas les bons droits, son nom dans la ligne de commande est incorrect, une constante (ou une variable) y est absente ou mal écrite, ou autre.  L'erreur 14 se produit lorsque la lecture a réussie mais que le contenue est invalide. dans les 2 cas, le problème vient du fichier .yaml.
   - 2 : une archive .tar.bz2 du même nom existe déjà, le dossier temporaire n'a pas été créé.
   - 3 : problème lors de la sauvegarde de la BDD MySQL, dossier temporaire supprimé.
   - 4 : erreur lors de la copie des fichiers, dossier temporaire supprimé.
@@ -98,13 +105,24 @@ Voici la liste des différents code retour :
   - 10 : erreur pendant la restauration des fichiers, le dossier temporaire n'a pas été supprimé.
   - 11 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
   - 12 : le dossier temporaire n'a pas été supprimé après la restauration. La restauration des fichiers et de la BDD à tout de même été faite.
-  - 13 : erreur lors de la lecture du fichier suivant le script python dans la ligne de commande. La ligne de commande ne contient probablement pas le fichier .yaml.
-  - 14 : problème dans le fichier .yaml, il contient une erreur.
+  - 13 : erreur lors de la lecture du fichier suivant le script python *dans la ligne de commande*. La ligne de commande ne contient probablement pas le fichier .yaml.
+  - 14 : problème de remplissage des variables lues dans le fichier .yaml. Ce dernier à cependant été lu, mais il contient une erreur. Voir le code retour 1.  
+
+
+## F.A.Q.
+
+**Il manque un fichier dans l'archive.**  
+Le fichier .yaml est certainement mal remplie quant à ce fichier.  
+
+**Un fichier n'a pas été remis lors de la restauration.**  
+Est-il bien dans l'archive ?
+
 
 ## Outils utilisés :
 
 **gedit 3.38.1** avec des greffons déjà présents.  
 **Debian 11** avec Gnome en environnement de bureau.
+
 
 ## Version
 
