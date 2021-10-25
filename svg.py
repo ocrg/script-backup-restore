@@ -80,7 +80,7 @@ def copy(files_in_site, temp_directory):
 		print("")
 		print("Copie des fichiers...")
 		for file_or_dir in files_in_site:
-		file	# On contrôle si c'est un dossier ou un fichier.
+			# On contrôle si c'est un dossier ou un fichier.
 			# Un dossier = shutil.copytree(src, dst) ; un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination ET le nom du dossier ou fichier à copier. D'où l'utilisation d'os.path.basename.
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
@@ -113,7 +113,7 @@ def compress_clean(deb, temp_directory, name_of_backup):
 	try:
 		#	COMPRESSION
 		# Instruction pour le tar.bz2.
-		print("Compression...")Créez une machine virtuelle sous Linux et installez un site sous WordPress. Cette machine fera office de serveur de Production.
+		print("Compression...")
 		with tarfile.open(deb + name_of_backup + '.tar.bz2', "w:bz2") as tar:
 			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("OK.")
