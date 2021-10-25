@@ -280,7 +280,7 @@ def restore():
 
 
 # Premier point de départ du script. vars contiendra les constantes qui sont dans le fichier .yaml. 
-if sys.argv[1] = true:
+if len(sys.argv) == 2:
 	vars = readConf(sys.argv[1])
 else:
 	print(Erreur !)
