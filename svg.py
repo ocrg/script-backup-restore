@@ -286,27 +286,29 @@ else:
 	print("Erreur !")
 	exit(13)
 
-
-# Les constantes.
-# Chemin de home.
-deb = vars['constantes']['deb']
-# Nom de la backup.
-name_of_backup = vars['constantes']['name_of_backup']
-# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
-temp_directory = deb + name_of_backup + '/'
-# Chemin du dossier du site.
-site_directory = vars ['constantes']['site_directory']
-# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
-files_in_site = vars['constantes']['files_in_site']
-# Tableau qui contient les fichiers à remettre en place.
-files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
-# Les constantes MySQL.
-DB_HOST = vars['constantes']['DB_HOST']
-DB_USER = vars['constantes']['DB_USER']
-DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
-DB_NAME = vars['constantes']['DB_NAME']
-BACKUP_PATH = temp_directory
-
+try:
+	# Les constantes.
+	# Chemin de home.
+	deb = vars['constantes']['deb']
+	# Nom de la backup.
+	name_of_backup = vars['constantes']['name_of_backup']
+	# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
+	temp_directory = deb + name_of_backup + '/'
+	# Chemin du dossier du site.
+	site_directory = vars ['constantes']['site_directory']
+	# Tableau qui contient les fichiers à sauvegarder ou supprimer selon la situation.
+	files_in_site = vars['constantes']['files_in_site']
+	# Tableau qui contient les fichiers à remettre en place.
+	files_to_restore = [temp_directory + 'wp-config.php',temp_directory + 'wp-content',temp_directory + '.htaccess']
+	# Les constantes MySQL.
+	DB_HOST = vars['constantes']['DB_HOST']
+	DB_USER = vars['constantes']['DB_USER']
+	DB_USER_PASSWORD = vars['constantes']['DB_USER_PASSWORD']
+	DB_NAME = vars['constantes']['DB_NAME']
+	BACKUP_PATH = temp_directory
+except:
+	print("Erreur !")
+	exit(14)
 
 # Second point de départ du script. Tout commence par la variable "status".
 if (vars['constantes']['status'] == 'restore'):

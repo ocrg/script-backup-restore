@@ -99,7 +99,7 @@ Voici la liste des différents code retour :
   - 11 : problème pendant la restauration de la BDD MySQL, le dossier temporaire n'a pas été supprimé.
   - 12 : le dossier temporaire n'a pas été supprimé après la restauration. La restauration des fichiers et de la BDD à tout de même été faite.
   - 13 : erreur lors de la lecture du fichier suivant le script python dans la ligne de commande. La ligne de commande ne contient probablement pas le fichier .yaml.
-
+  - 14 : problème dans le fichier .yaml, il contient une erreur.
 
 ## Outils utilisés :
 
