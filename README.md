@@ -1,7 +1,7 @@
 # Projet 6
 ![license](https://img.shields.io/badge/license-CC0-green)
 
-Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de donnée MySQL.  
+Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de données MySQL.  
 Il permet également de faire une restauration à partir de l'un des backups effectué. Autrement dit, il permet de repartir à zéro.
 
 
@@ -71,7 +71,7 @@ Voici l'arborescence :
   - fonction qui supprime les fichiers à restaurer (simulation d'un crash) ;
   - fonction de décompression, tout est placé dans le dossier temporaire ;
   - fonction de restauration des fichiers et dossiers, les éléments sont copier du dossier temporaire au répertoire du site ;
-  - fonction de restauration de la base de donnée MySQL, et qui supprime le dossier temporaire ;
+  - fonction de restauration de la base de données MySQL, et qui supprime le dossier temporaire ;
 - fonction backup (cette fonction lance les fonctions écrites dans la partie backup) ;
 - fonction restauration (cette fonction lance les fonctions écrites dans la partie restauration) ;
 - morceau de code qui remplie les constantes (il utilise vars et la fonction de lecture du fichier .yaml pour remplir lesdites constantes) ;
