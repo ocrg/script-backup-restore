@@ -87,7 +87,7 @@ def copy(files_in_site, temp_directory):
 			# On contrôle si c'est un dossier ou un fichier.
 			# Un dossier = shutil.copytree(src, dst) ; un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination ET le nom du dossier ou fichier à copier. D'où l'utilisation d'os.path.basename.
-			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et avec son extension. Donc ça nous donne 'wp-config.php' par exemple.
 
 			# Si c'est un dossier et qu'il n'existe pas dans le dossier temporaire :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == False:
@@ -166,7 +166,7 @@ def crash(files_in_site):
 		print("Remise à zéro...")
 		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
-			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extention. Donc ça nous donne 'wp-config.php' par exemple.
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extension. Donc ça nous donne 'wp-config.php' par exemple.
 			# Si c'est un dossier et que ça existe, on le supprime dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
 				shutil.rmtree(file_or_dir)
@@ -189,7 +189,7 @@ def crash(files_in_site):
 		exit(8)
 
 
-### EXTRATION ###
+### EXTRACTION ###
 def extract(deb, name_of_backup, temp_directory):
 	try:
 		#	DÉCOMPRESSION
@@ -241,7 +241,6 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 		# La ligne de code qui sera exécutée par subprocess.
 		dumpcmd = "mysql -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
-		# Un print pour voir ce qui est clairement saisie.
 		print("OK.")
 		print("")
 	except:
