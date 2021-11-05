@@ -10,17 +10,17 @@
 
 
 # Les import.
-# Récupérer les chemins
+# Permet d'exécuter des commandes systèmes
 import os
-# Copier/coller
+# Pour faire des copier/coller de fichiers et de dossiers, comme quoi l'import précédant est limité !
 import shutil
-# Compression et décompression
+# Compression et décompression, ça fonctionne aussi bien pour le format gz que pour bz2.
 import tarfile
 # Permet de lire les .yaml
 import yaml
-# Permet de lire directement la ligne de commande
+# Permet de lire la ligne de commande
 import sys
-# subprocess exécute une ligne de commande comme dans un terminal
+# subprocess exécute une ligne de commande comme dans une console
 import subprocess
 
 
@@ -58,7 +58,7 @@ def create_tmp_save(deb, name_of_backup, temp_directory):
 		print("L'archive " + name_of_backup + ".tar.bz2 semble déjà exister.")
 		print("Erreur !")
 		exit(2)
-	# Si le chemin /home/debian/temp_directory n'existe pas, on créer le dossier temporaire.
+	# Si le chemin du dossier temporaire n'existe pas, on créer ce dossier temporaire.
 	if not os.path.exists(temp_directory):
 		os.mkdir(temp_directory)
 
@@ -67,10 +67,11 @@ def create_tmp_save(deb, name_of_backup, temp_directory):
 def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
-		# La ligne de code qui sera exécutée par subprocess.
+		# La ligne de code MySQL est classique, mais elle sera exécutée par subprocess.
 		dumpcmd = "mysqldump --add-drop-table -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " > " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
 	except:
+		# La ligne suivant supprime le dossier temporaire, ainsi on est sûr d'avoir un tel dossier vide, mais aussi qu'il est unique.
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
 		exit(3)
@@ -80,14 +81,14 @@ def sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 def copy(files_in_site, temp_directory):
 	try:
 		#	COPIE
-		# On fait le tour du tableau avec la boucle for.
+		# On fait le tour du tableau avec une boucle for.
 		print("")
 		print("Copie des fichiers...")
 		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier.
 			# Un dossier = shutil.copytree(src, dst) ; un fichier = shutil.copyfile(src, dst).
 			# En dst, on indique le chemin du dossier de destination ET le nom du dossier ou fichier à copier. D'où l'utilisation d'os.path.basename.
-			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et avec son extension. Donc ça nous donne 'wp-config.php' par exemple.
+			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin et son extension. Donc ça nous donne 'wp-config.php' par exemple.
 
 			# Si c'est un dossier et qu'il n'existe pas dans le dossier temporaire :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == False:
@@ -100,13 +101,14 @@ def copy(files_in_site, temp_directory):
 				print("Ce dossier existe déjà dans le dossier temporaire : " + file_or_dir)
 			# Si c'est un fichier et qu'il existe déjà dans le dossier temporaire :
 			elif os.path.isfile(file_or_dir) == True and os.path.exists(temp_directory + os.path.basename(file_or_dir)) == True:
-				print("Ce fichier existe déjà dans le dossier temporaire : " + file_or_dir)			
+				print("Ce fichier existe déjà dans le dossier temporaire : " + file_or_dir)
 			# Si anomalie :
 			else:
 				print("Il y a eu un problème avec" + file_or_dir)
 		print("OK.")
 		print("")
 	except:
+		# Encore une fois, en cas d'erreur on supprime le dossier temporaire afin d'éviter un conflit.
 		shutil.rmtree(temp_directory)
 		print("Erreur !")
 		exit(4)
@@ -118,7 +120,9 @@ def compress_clean(deb, temp_directory, name_of_backup):
 		#	COMPRESSION
 		# Instruction pour le tar.bz2.
 		print("Compression...")
+		# L'argument 'w:' contient bz2, mais on peut choisir gz
 		with tarfile.open(deb + name_of_backup + '.tar.bz2', "w:bz2") as tar:
+			# .add pour ajouter dans le dossier compresser.
 			tar.add(temp_directory, os.path.basename(temp_directory))
 		print("OK.")
 		print("")
@@ -129,7 +133,7 @@ def compress_clean(deb, temp_directory, name_of_backup):
 
 	try:
 		#	SUPPRESSION DOSSIER TEMPORAIRE
-		# Suppression du dossier temporaire.
+		# Suppression du dossier temporaire, on en a fini avec lui.
 		shutil.rmtree(temp_directory)
 		print("Backup OK !")
 	except:
@@ -167,6 +171,7 @@ def crash(files_in_site):
 		for file_or_dir in files_in_site:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
 			# os.path.basename() nous renvoie le nom du dernier élément d'un chemin, et avec son extension. Donc ça nous donne 'wp-config.php' par exemple.
+
 			# Si c'est un dossier et que ça existe, on le supprime dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(file_or_dir) == True:
 				shutil.rmtree(file_or_dir)
@@ -196,6 +201,7 @@ def extract(deb, name_of_backup, temp_directory):
 		# Décompression. Instruction pour le tar.bz2.
 		print("Décompression...")
 		with tarfile.open(deb + name_of_backup + '.tar.bz2') as tar:
+			# .extractall pour décompresser.
 			tar.extractall(temp_directory)
 		print("OK.")
 		print("")
@@ -210,8 +216,10 @@ def restauration(files_to_restore, site_directory, temp_directory):
 	try:
 		#	RESTAURATION
 		print("Restauration...")
+		# On fait du triage élément par élément avec une boucle.
 		for file_or_dir in files_to_restore:
 			# On contrôle si c'est un dossier ou un fichier. Un dossier = shutil.rmtree(), un fichier = os.remove().
+
 			# Si c'est un dossier et qu'il n'existe pas dans /var, on le met dans /var :
 			if os.path.isdir(file_or_dir) == True and os.path.exists(site_directory + os.path.basename(file_or_dir)) == False:
 				shutil.copytree(file_or_dir, site_directory + os.path.basename(file_or_dir))
@@ -238,13 +246,13 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 	try:
 		#	MYSQLDUMP
 		print("Restauration de la base MySQL...")
-		# La ligne de code qui sera exécutée par subprocess.
+		# La ligne de code MySQL sera exécutée par subprocess.
 		dumpcmd = "mysql -h " + DB_HOST + " -u " + DB_USER + " -p" + DB_USER_PASSWORD + " " + DB_NAME + " < " + BACKUP_PATH + DB_NAME + ".sql"
 		subprocess.run(dumpcmd, shell=True)
 		print("OK.")
 		print("")
 	except:
-		# MySQLdump peut générer des erreurs mais poursuivre correctement malgré tout...
+		# MySQLdump peut indiquer des erreurs mais poursuivre correctement malgré tout.
 		print("Erreur !")
 		exit(11)
 
@@ -265,7 +273,7 @@ def sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH):
 
 
 
-# Appel de la fonction pour sauvegarder.
+# Appel des fonctions pour sauvegarder.
 def backup():
 	create_tmp_save(deb, name_of_backup, temp_directory)
 	sql_save(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
@@ -273,7 +281,7 @@ def backup():
 	compress_clean(deb, temp_directory, name_of_backup)
 
 
-# Appels des fonctions pour restaurer.
+# Appel des fonctions pour restaurer.
 def restore():
 	create_tmp_restore(deb, name_of_backup, temp_directory)
 	crash(files_in_site)
@@ -282,7 +290,9 @@ def restore():
 	sql_restore(DB_HOST, DB_USER, DB_USER_PASSWORD, DB_NAME, BACKUP_PATH)
 
 
-# Premier point de départ du script. vars contiendra les constantes qui sont dans le fichier .yaml. 
+# Premier point de départ du script. L'air de rien, jusque-là il n'y a eu que des définitions de fonctions.
+# vars contiendra les constantes qui sont dans le fichier .yaml.
+# Si sys.argv compte 2 fichiers dans la ligne de commande, soit le script et le .yaml, alors il lance le vars. Sinon c'est erreur.
 if len(sys.argv) == 2:
 	vars = readConf(sys.argv[1])
 else:
@@ -295,7 +305,7 @@ try:
 	deb = vars['constantes']['deb']
 	# Nom de la backup.
 	name_of_backup = vars['constantes']['name_of_backup']
-	# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable dans un .yaml.
+	# Chemin du dossier temporaire, on ne peut pas faire d'assemblage de variable ou de constantes dans un .yaml.
 	temp_directory = deb + name_of_backup + '/'
 	# Chemin du dossier du site.
 	site_directory = vars ['constantes']['site_directory']
@@ -313,10 +323,12 @@ except:
 	print("Erreur !")
 	exit(14)
 
-# Second point de départ du script. Tout commence par la variable "status".
+# Second point de départ du script. Tout commence par la constantes "status".
 if (vars['constantes']['status'] == 'restore'):
+	# Si la constantes est "restore", on lance une restauration.
 	restore()
 else:
+	# Mais par défaut, on lance une backup, donc si "restore" est mal écrit, ce sera une restauration.
 	backup()
 
 
