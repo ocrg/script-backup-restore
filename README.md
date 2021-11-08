@@ -1,4 +1,4 @@
-# Projet 6
+# Projet 6 - Participez à la vie de la communauté Open Source
 ![license](https://img.shields.io/badge/license-CC0-green)
 
 Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de données MySQL.  
