@@ -128,7 +128,7 @@ Est-il bien dans l'archive ?
 ## Version
 
 Version actuelle stable : 1.0  
-Écrite à la fin de l'été 2021.  
+Écrite en 2021.  
 Dernière mise à jour : voir les commits.  
 
 Des mises à jour très mineures peuvent avoir lieu, mais très ponctuellement.  
