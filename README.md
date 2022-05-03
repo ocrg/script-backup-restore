@@ -1,5 +1,5 @@
 # Script de sauvegarde et de restauration de fichiers, de dossiers, et de BDD MySQL sous Debian.
-[![license](https://img.shields.io/badge/license-CC0-green)](https://fr.wikipedia.org/wiki/Licence_Creative_Commons#Sept_licences_r%C3%A9guli%C3%A8rement_utilis%C3%A9es)
+[![license](https://img.shields.io/badge/license-CC0-green)](https://fr.wikipedia.org/wiki/Licence_CC0)
 
 Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de données MySQL.  
 Il permet également de faire une restauration à partir de l'un des backups effectué. Autrement dit, il permet de repartir à zéro.
