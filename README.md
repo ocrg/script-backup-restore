@@ -1,4 +1,4 @@
-# Projet 6 - Participez à la vie de la communauté Open Source
+# Script de sauvegarde et de restauration de fichiers, de dossiers, et de BDD MySQL sous Debian.
 [![license](https://img.shields.io/badge/license-CC0-green)](https://fr.wikipedia.org/wiki/Licence_Creative_Commons#Sept_licences_r%C3%A9guli%C3%A8rement_utilis%C3%A9es)
 
 Ce script permet de faire un backup d'un site WordPress, de ses fichiers essentiels et de sa base de données MySQL.  
@@ -17,7 +17,7 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 - Apache2
 - PHP 7
 - mysql 8
-- WordPress [téléchargé](https://fr.wordpress.org/download/) sur le site
+- WordPress [téléchargé](https://fr.wordpress.org/download/)
 - Python 3
 
 
