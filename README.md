@@ -21,15 +21,15 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 - Python 3
 
 
-### Quelques détails
+### Aide à l'installation
 
 Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
 - [netpunet.fr](https://fr.wordpress.org/download/), surtout MySQL,
 - [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2,
-- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress mais pas que.
+- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress, mais pas que.
 
-Du reste il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) les cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.  
-Une fois le site installé et fonctionnel, il faut le personnaliser en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
+Du reste, il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) des cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.  
+Une fois le site installé et fonctionnel, il est bon de le personnaliser un peu en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
 
 
 ## Présentation du script
