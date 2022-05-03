@@ -17,7 +17,7 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 - Apache2
 - PHP 7
 - mysql 8
-- WordPress [téléchargé](https://fr.wordpress.org/download/)
+- [WordPress](https://fr.wordpress.org/download/)
 - Python 3
 
 
