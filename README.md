@@ -23,12 +23,12 @@ Sur une VM [Debian 11](https://www.debian.org) créée avec VirtualBox 6.1, le s
 
 ### Aide à l'installation
 
-Pour installer le site, on peut utiliser des tutoriels. En voici quelques-uns :
-- [netpunet.fr](https://fr.wordpress.org/download/), surtout MySQL,
-- [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout Apache2,
-- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), surtout pour WordPress, mais pas que.
+Quelques tutoturiels si jamais on est perdu (ou débutant) :
+- [netpunet.fr](https://fr.wordpress.org/download/), surtout pour MySQL,
+- [reportingbusiness](https://www.reportingbusiness.fr/blogging/installez-wordpress-sur-votre-ordinateur-en-moins-de-15-minutes-linux.html), surtout pour Apache2,
+- [wordpress.org](https://fr.wordpress.org/support/article/how-to-install-wordpress/), essentiellement pour WordPress.
 
-Du reste, il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) des cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.  
+Du reste, il y a sur [OpenClassrooms](https://openclassrooms.com/fr/) des cours sur LAMP, MySQL, WordPress, Linux et la virtualisation.
 Une fois le site installé et fonctionnel, il est bon de le personnaliser un peu en choisissant un thème, et en publiant quelques billets pour rendre le site un peu plus "vivant".
 
 
